@@ -1,0 +1,21 @@
+1. Datos personales
+    Nombre
+    Apellidos
+    DNI
+    Numero de Celular
+    Datos Ubigeo
+    correo electronico
+    Fecha de Nacimiento
+    Sexo
+    Certificado de Fuerzas Armadas
+    Certificado de Discapacidad
+    Colegiatura 
+    Habilitada (SI/NO)
+2. Datos de Formacion Academica (Multiple)
+    Nivel (Doctorado, tecnicatura, universitario, secundario, etc)
+    Area de especialización (Agronomia, tecnologia, etc)
+    Estado (Terminado, en curso, abandonado)
+    Fecha Inicio
+    Fecha Fin
+    
+3. 
