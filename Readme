@@ -1,21 +1,36 @@
-1. Datos personales
-    Nombre
-    Apellidos
-    DNI
-    Numero de Celular
-    Datos Ubigeo
-    correo electronico
-    Fecha de Nacimiento
-    Sexo
-    Certificado de Fuerzas Armadas
-    Certificado de Discapacidad
-    Colegiatura 
-    Habilitada (SI/NO)
-2. Datos de Formacion Academica (Multiple)
-    Nivel (Doctorado, tecnicatura, universitario, secundario, etc)
-    Area de especialización (Agronomia, tecnologia, etc)
-    Estado (Terminado, en curso, abandonado)
-    Fecha Inicio
-    Fecha Fin
-    
-3. 
+Diseña un sistema de cobranza coactiva con los siguiente requerimientos. Se requiere tener los siguientes datos de los usuarios:
+    Datos personales:
+        Nombre
+        Apellidos
+        DNI
+        Numero de Celular
+        Datos Ubigeo
+        correo electronico
+        Fecha de Nacimiento
+        Sexo
+        Certificado de Fuerzas Armadas
+        Certificado de Discapacidad
+        Colegiatura 
+        Habilitada (SI/NO)
+    Datos de formación Academica: (Un usuario puede tener multiples registros, debe poder editarlos, eliminarlos, cargar archivos que incluya certificado de estudios y/o alguna 
+    constancia que acredite la información registrada)
+        Nivel (Doctorado, tecnicatura, universitario, secundario, etc)
+        Area de especialización (Agronomia, tecnologia, etc)
+        Estado (Terminado, en curso, abandonado)
+        Fecha Inicio
+        Fecha Fin
+    Experiencia laboral (Un usuario puede tener multiples registros, debe poder editarlos, eliminarlos, cargar archivos opcionalmente):
+        Fecha de Incio
+        Estado (si sigue trabajando ahí o no, esto pude activar o desactivar la fecha fin)
+        Fecha de fin
+        Entidad/Empresa
+        Tipo entidad
+        Rubro empresa
+        Descripción de labores
+    Certificados y/o capacitaciones (Puede adjuntar multiples certificados)
+        Titulo certificado
+        Horas lectivas
+        Año en el que realizo el curso/capacitación
+
+Sobre las capcitaciones: Las capacitaciones actualmente se maneja de la siguiente forma. En un archivo llamado base de convocatoria, se detallan los perfiles, sueldos y ubicaciones, cronograma y forma de calificacion
+Este archivo es un archivo escaneado. Para modernizar p
