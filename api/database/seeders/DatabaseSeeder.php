@@ -2,24 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use Infrastructure\SeederTracker;
+use Database\Seeders\{
+    Rbac,
+    Ubigeo,
+    User, 
+    Elementos,
+    CentrosPoblados
+};
 
-class DatabaseSeeder extends Seeder
+class DatabaseSeeder extends SeederTracker
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
+    
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->callIfNotExecuted(Ubigeo::class);
+        $this->callIfNotExecuted(Rbac::class);
+        //$this->callIfNotExecuted(User::class);
     }
 }
