@@ -1,53 +1,220 @@
-Diseña un sistema de cobranza coactiva con los siguiente requerimientos. Se requiere tener los siguientes datos de los usuarios:
-    Datos personales:
-        Nombre
-        Apellidos
-        DNI
-        Numero de Celular
-        Datos Ubigeo
-        correo electronico
-        Fecha de Nacimiento
-        Sexo
-        Certificado de Fuerzas Armadas
-        Certificado de Discapacidad
-        Colegiatura 
-        Habilitada (SI/NO)
-    Datos de formación Academica: (Un usuario puede tener multiples registros, debe poder editarlos, eliminarlos, cargar archivos que incluya certificado de estudios y/o alguna 
-    constancia que acredite la información registrada)
-        Nivel (Doctorado, tecnicatura, universitario, secundario, etc)
-        Area de especialización (Agronomia, tecnologia, etc)
-        Estado (Terminado, en curso, abandonado)
-        Fecha Inicio
-        Fecha Fin
-    Experiencia laboral (Un usuario puede tener multiples registros, debe poder editarlos, eliminarlos, cargar archivos opcionalmente):
-        Fecha de Incio
-        Estado (si sigue trabajando ahí o no, esto pude activar o desactivar la fecha fin)
-        Fecha de fin
-        Entidad/Empresa
-        Tipo entidad
-        Rubro empresa
-        Descripción de labores
-    Certificados y/o capacitaciones (Puede adjuntar multiples certificados)
-        Titulo certificado
-        Horas lectivas
-        Año en el que realizo el curso/capacitación
+Requerimientos Funcionales
+Portal de Convocatorias Laborales del Estado Peruano (alineado a SERVIR)
+1. Gestión de Usuarios (Postulantes)
+1.1 Datos personales
 
-Sobre las convocatorias: Las capacitaciones actualmente se maneja de la siguiente forma. En un archivo llamado base de convocatoria, se detallan los perfiles, sueldos y ubicaciones, cronograma y forma de calificacion
-Este archivo es un archivo escaneado. Hay ciertas reglas que se aplican para una convocatoria.
-    1. Una convocatoria puede tener multiples perfiles.
-    2. Cada perfil tiene un sueldo asociado.
-    3. Cada perfil tiene una ubicacion asociada.
-    4. Una convocatoria tiene un cronograma asociado.
-    5. Una convocatoria tiene una forma de calificacion asociada.
-    6. Una convocatoria tiene solo un archivo base de convocatoria asociado.
-    7. Una convocatoria puede tener multiples postulantes.
-    8. Un postulante solo puede postular a un perfil por convocatoria. 
-    9. Un postulante debe tener un estado en la convocatoria (preseleccionado, rechazado, seleccionado, en proceso, etc)
-    10. Un postulante puede tener multiples archivos adjuntos (documentos que acrediten su experiencia, formacion academica, etc)
-    11. Las convocatorias tiene estados (abierta, cerrada, en proceso de evaluacion, etc)
-    12. Una convocatoria tiene una fecha de inicio y una fecha de fin.
-    13. Una convocatoria tiene una fecha limite para postular.
-    14. Una convocatoria tiene una fecha de publicacion.
-    15. Una convocatoria tiene una descripcion general.
-    16. Una convocatoria tiene una entidad organizadora.
-    17. Una convocatoria tiene documentos asociados a lo largo de su vida que puede modificar el estado de la convocatoria (por ejemplo, una prorroga, un cambio en el cronograma, etc)
+El sistema debe permitir el registro y administración de los siguientes datos personales del postulante:
+
+Nombres
+
+Apellidos
+
+Documento Nacional de Identidad (DNI)
+
+Número de celular
+
+Ubigeo (Departamento, Provincia, Distrito)
+
+Correo electrónico
+
+Fecha de nacimiento
+
+Sexo
+
+Licenciamiento de las Fuerzas Armadas (Sí / No)
+
+Certificado de discapacidad (Sí / No)
+
+Colegio profesional (si aplica)
+
+Habilitación profesional (Sí / No)
+
+Nota: Los documentos sustentatorios (licenciamiento FF.AA., discapacidad, colegiatura, habilitación) deben poder adjuntarse como archivos.
+
+1.2 Formación Académica
+
+Un usuario puede registrar múltiples registros de formación académica.
+Cada registro debe poder crearse, editarse y eliminarse, y permitir la carga de documentos sustentatorios.
+
+Campos requeridos:
+
+Nivel educativo (Secundaria, Técnica, Universitaria, Maestría, Doctorado, etc.)
+
+Área de especialización (Ej. Agronomía, Tecnología, Derecho, etc.)
+
+Estado (Culminado, En curso, Inconcluso)
+
+Fecha de inicio
+
+Fecha de fin
+
+Archivo(s) adjunto(s) (certificado de estudios, constancia u otro documento válido)
+
+1.3 Experiencia Laboral
+
+Un usuario puede registrar múltiples experiencias laborales.
+
+Campos:
+
+Fecha de inicio
+
+Estado laboral (En curso / Finalizado)
+
+Fecha de fin (habilitada solo si el estado es “Finalizado”)
+
+Entidad o empresa
+
+Tipo de entidad (Pública / Privada)
+
+Rubro de la entidad
+
+Descripción de funciones realizadas
+
+Archivo(s) adjunto(s) opcional(es)
+
+1.4 Certificados y Capacitaciones
+
+El usuario puede registrar múltiples certificados o capacitaciones.
+
+Campos:
+
+Título del certificado o capacitación
+
+Horas lectivas
+
+Año de realización
+
+Archivo adjunto (obligatorio)
+
+2. Gestión de Convocatorias
+
+Actualmente las convocatorias se sustentan en un archivo base de convocatoria escaneado, el cual contiene perfiles, sueldos, ubicaciones, cronograma y forma de evaluación.
+
+Reglas generales de convocatoria
+
+Una convocatoria puede tener uno o varios perfiles.
+
+Cada perfil tiene un sueldo asociado.
+
+Cada perfil tiene una ubicación geográfica asociada.
+
+Una convocatoria tiene un cronograma.
+
+Una convocatoria tiene una forma de calificación definida.
+
+Una convocatoria tiene un único archivo base de convocatoria.
+
+Una convocatoria puede tener múltiples postulantes.
+
+Un postulante solo puede postular a un perfil por convocatoria.
+
+Un postulante tiene un estado dentro de la convocatoria (Postulante, Preseleccionado, No apto, Seleccionado, En evaluación, etc.).
+
+Un postulante puede adjuntar múltiples documentos por postulación.
+
+La convocatoria tiene estados (Borrador, Publicada, Abierta, En evaluación, Cerrada, Finalizada).
+
+La convocatoria tiene:
+
+Fecha de publicación
+
+Fecha de inicio
+
+Fecha de cierre
+
+Fecha límite de postulación
+
+La convocatoria tiene una descripción general.
+
+La convocatoria tiene una entidad organizadora.
+
+La convocatoria puede tener documentos adicionales durante su vigencia (prórrogas, fe de erratas, modificaciones de cronograma, etc.), los cuales pueden afectar su estado.
+
+3. Postulaciones
+3.1 Generación de CV
+
+El sistema debe permitir al postulante:
+
+Generar un CV personalizado, seleccionando:
+
+Experiencia laboral
+
+Formación académica
+
+Certificados/capacitaciones
+
+O generar un CV automático con toda la información registrada.
+
+3.2 Gestión de Postulación
+
+El usuario puede adjuntar documentos adicionales exigidos por la convocatoria (declaraciones juradas, anexos, etc.).
+
+El usuario puede visualizar el estado de su postulación en tiempo real.
+
+El usuario puede visualizar convocatorias abiertas y postular.
+
+El usuario puede ver el historial de postulaciones:
+
+Convocatoria
+
+Perfil
+
+Estado
+
+Fechas
+
+El usuario puede editar su postulación mientras la convocatoria esté abierta.
+
+El usuario puede eliminar su postulación mientras la convocatoria esté abierta.
+
+4. Notificaciones
+
+El sistema debe contar con una estructura de notificaciones para:
+
+Cambios de estado de postulación
+
+Requerimiento de documentos
+
+Nuevas convocatorias
+
+Modificaciones de convocatorias
+
+No es obligatorio implementar correo electrónico en esta etapa, pero la arquitectura debe permitir su implementación futura.
+
+5. Administración del Sistema
+
+El administrador del sistema puede:
+
+Gestionar convocatorias (crear, editar, publicar, cerrar, eliminar).
+
+Gestionar perfiles asociados a una convocatoria.
+
+Gestionar postulaciones y sus estados.
+
+Registrar documentos oficiales de:
+
+Resultados de evaluación
+
+Actos de entrevista
+
+Resultados finales y ganadores
+
+Publicar documentos asociados a cada etapa del proceso.
+
+6. Consideraciones de Cumplimiento SERVIR
+
+Inmutabilidad de documentos publicados.
+
+Trazabilidad de cambios de estado.
+
+Historial auditable de postulaciones.
+
+Fechas y cronogramas no modificables sin documento sustentatorio.
+
+Separación clara entre:
+
+Información declarada
+
+Información verificada
+
+Información evaluada
