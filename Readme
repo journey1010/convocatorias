@@ -32,5 +32,22 @@ Diseña un sistema de cobranza coactiva con los siguiente requerimientos. Se req
         Horas lectivas
         Año en el que realizo el curso/capacitación
 
-Sobre las capcitaciones: Las capacitaciones actualmente se maneja de la siguiente forma. En un archivo llamado base de convocatoria, se detallan los perfiles, sueldos y ubicaciones, cronograma y forma de calificacion
-Este archivo es un archivo escaneado. Para modernizar 
+Sobre las convocatorias: Las capacitaciones actualmente se maneja de la siguiente forma. En un archivo llamado base de convocatoria, se detallan los perfiles, sueldos y ubicaciones, cronograma y forma de calificacion
+Este archivo es un archivo escaneado. Hay ciertas reglas que se aplican para una convocatoria.
+    1. Una convocatoria puede tener multiples perfiles.
+    2. Cada perfil tiene un sueldo asociado.
+    3. Cada perfil tiene una ubicacion asociada.
+    4. Una convocatoria tiene un cronograma asociado.
+    5. Una convocatoria tiene una forma de calificacion asociada.
+    6. Una convocatoria tiene solo un archivo base de convocatoria asociado.
+    7. Una convocatoria puede tener multiples postulantes.
+    8. Un postulante solo puede postular a un perfil por convocatoria. 
+    9. Un postulante debe tener un estado en la convocatoria (preseleccionado, rechazado, seleccionado, en proceso, etc)
+    10. Un postulante puede tener multiples archivos adjuntos (documentos que acrediten su experiencia, formacion academica, etc)
+    11. Las convocatorias tiene estados (abierta, cerrada, en proceso de evaluacion, etc)
+    12. Una convocatoria tiene una fecha de inicio y una fecha de fin.
+    13. Una convocatoria tiene una fecha limite para postular.
+    14. Una convocatoria tiene una fecha de publicacion.
+    15. Una convocatoria tiene una descripcion general.
+    16. Una convocatoria tiene una entidad organizadora.
+    17. Una convocatoria tiene documentos asociados a lo largo de su vida que puede modificar el estado de la convocatoria (por ejemplo, una prorroga, un cambio en el cronograma, etc)
