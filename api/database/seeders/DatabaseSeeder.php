@@ -7,8 +7,6 @@ use Database\Seeders\{
     Rbac,
     Ubigeo,
     User, 
-    Elementos,
-    CentrosPoblados
 };
 
 class DatabaseSeeder extends SeederTracker

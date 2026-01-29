@@ -14,12 +14,19 @@ return new class extends Migration
         Schema::create('personal_data_extra', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('department_id')->constrained('departments');
+            $table->foreignId('province_id')->constrained('provinces');
+            $table->foreignId('district_id')->constrained('districts');
+            $table->string('address');
             $table->datetimes('birthday');
             $table->tinyInteger('genere');
-            $table->boolean('have_cert_discapacity');
+            $table->boolean('have_cert_disability');
+            $table->string('file_cert_disability')->nullable();
             $table->boolean('have_cert_army');
+            $table->string('file_cert_army')->nullable();
             $table->boolean('have_cert_professional_credentials');
-            $table->boolean('');
+            $table->string('file_cert_professional_credentials')->nullable();
+            $table->boolean('is_active_cert_professional_credentials');
             $table->timestamps();
         });
     }
