@@ -22,11 +22,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('status')->default(1);
-            $table->unsignedSmallInteger('token_version');
-            $table->unsignedSmallInteger('number_login_device');
+            $table->unsignedInteger('status')->default(1);
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->unsignedInteger('level')->default(1);
+            $table->unsignedTinyInteger('type_user')->default(1);
             $table->timestamps();
         });
     }

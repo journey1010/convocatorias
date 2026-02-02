@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-Use Modules\Rbac\Models\{Permission, Role};
+Use Modules\Rbac\Models\{Permission};
 use Illuminate\Database\Seeder;
 
 class Rbac extends Seeder
@@ -11,11 +11,7 @@ class Rbac extends Seeder
     {
         // wildcard
         $this->addPermission('*', 'wildcard', 'Permission for all actions (exclusively for sysadmin)');
-
-        $this->addPermission('topic.manage', 'Temáticas Administrador', 'Permite administrar temáticas y sub-temáticas' );
-
-        $this->addPermission('tipo_elemento.manage', 'Tipo Elemento Administrador', 'Permite crear, listar, actualizar los tipos de elementos');
-
+        $this->addPermission('applicant', 'Aplicante', 'Permisos para aplicar a una convocatoria');
         $this->users();
         $this->rbac();
     }
