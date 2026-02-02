@@ -23,7 +23,7 @@ class JwtManager implements TokenManager
         $this->privateKey = JWTKeyManager::getPrivateKey();
     }
 
-    private function generateToken(string $subject, string $typeClient, ?int $ttl, ?int $version = null, ?array $customClaims = null): string
+    public function generateToken(string $subject, string $typeClient, ?int $ttl, ?int $version = null, ?array $customClaims = null): string
     {
         $issuedAt = time();
 

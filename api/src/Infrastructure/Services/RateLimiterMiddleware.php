@@ -4,13 +4,12 @@ namespace Infrastructure\Services;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Infrastructure\Services\FingerPrint;
 use Illuminate\Support\Facades\RateLimiter;
 
 class RateLimiterMiddleware {
     
-    public function handle(Request $request, \Closure $next, string $name = 'api', int $maxAttempts = 5, int $decayMinutes = 1): JsonResponse
+    public function handle(Request $request, \Closure $next, string $name = 'api', int $maxAttempts = 5, int $decayMinutes = 1)
     {    
         $fingerprint = FingerPrint::generate($request);
         $key = "throttle:{$name}:{$fingerprint}";
@@ -25,6 +24,8 @@ class RateLimiterMiddleware {
 
         RateLimiter::hit($key, $decayMinutes * 60);
 
+        $request->headers->set('X-Fingerprint', $fingerprint);
+        
         return $next($request);
     }
 }

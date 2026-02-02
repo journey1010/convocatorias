@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('province_id')->constrained('provinces');
             $table->foreignId('district_id')->constrained('districts');
             $table->string('address');
-            $table->datetimes('birthday');
+            $table->date('birthday');
             $table->tinyInteger('genere');
             $table->boolean('have_cert_disability');
             $table->string('file_cert_disability')->nullable();

@@ -25,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'anti.bot' => RateLimiterMiddleware::class,
+            'anti.bot' => RateLimiterMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
