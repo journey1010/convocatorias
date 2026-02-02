@@ -18,47 +18,43 @@ use Modules\Auth\Services\Tokens\Exceptions\TokenException;
 
 class Jwt
 {   
+    public function __construct(protected JwtManager $jwtManager) {}
+
     public function handle(Request $request, Closure $next, ...$expectType): Response
     {
+        $token = $request->bearerToken();
+        
+        if (!$token) {
+            return $this->unauthorized('Token Bearer not provided');
+        }
+
         try {
-            $token = $request->bearerToken();
-            if (empty($token)) {
-                throw new TokenException('Token Bearer not provided');
+            $claims = $this->jwtManager->decode($token);
+
+            if (!empty($expectType) && !in_array($claims->type_client ?? '', $expectType)) {
+                return $this->unauthorized('Invalid token type for this route');
             }
 
-            $claims = (new JwtManager)->validateToken($token);
-
-            if (!in_array($claims->type_client, $expectType)) {
-                throw new TokenException('Invalid token type for this route');
-            }
-            
-            match ($claims->type_client ?? null) {
-                'internal' => AccessToken::execute($request, $claims),
-                'refresh' => RefreshToken::execute($request, $claims),
-                default => throw new TokenException('Cliente desconocido')
-            };
+            $this->resolveTokenStrategy($request, $claims);
 
             return $next($request);
-        } catch (ExpiredException $e) {
-            return $this->unauthorized('Expired token');
-        } catch (TokenException $e){
-            return $this->unauthorized($e->getMessage());
-        } catch (SignatureInvalidException | BeforeValidException | UnexpectedValueException  | Exception $e) {
-            Log::error('JWT error: ' . $e->getMessage(), [
-                'exception'        => get_class($e),
-                'file'             => $e->getFile(),
-                'line'             => $e->getLine(),
-                'code'             => $e->getCode(),
-                'previous'         => $e->getPrevious() ? get_class($e->getPrevious()) : null,
-                'trace_snippet'    => collect($e->getTrace())->take(5)->toArray(),
-                'timestamp'        => now()->toIso8601String(),
-            ]);
-            return $this->unauthorized('Invalid token');
+
+        } catch (TokenException $e) {
+            return $this->unauthorized($e->getMessage(), $e->getCode());
         }
     }
 
-    protected function unauthorized(string $message): Response
+    protected function resolveTokenStrategy(Request $request, $claims): void
+    { 
+        match ($claims->type_client ?? null) {
+            'internal' => AccessToken::execute($request, $claims),
+            'refresh'  => RefreshToken::execute($request, $claims),
+            default    => throw new TokenException('Unknown client type')
+        };
+    }
+
+    protected function unauthorized(string $message, int $code = 401): Response
     {
-        return response()->json(['message' => $message], 401);
+        return response()->json(['message' => $message], $code);
     }
 }

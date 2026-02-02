@@ -3,11 +3,24 @@
 namespace Modules\Auth\Services\Tokens;
 
 use stdClass;
+use Exception;
+use UnexpectedValueException;
+use Illuminate\Support\Facades\Log;
 use Modules\Auth\Services\Tokens\Enum\TokenType;
-use Firebase\JWT\Key;
-use Firebase\JWT\JWT;
-use Modules\Auth\Services\Tokens\Contracts\TokenManager;
-use Modules\Auth\Services\Tokens\JWTKeyManager;
+use Firebase\JWT\{
+    Key, 
+    JWT, 
+    ExpiredException
+};
+use Modules\Auth\Services\Tokens\{
+    Contracts\TokenManager,
+    JWTKeyManager
+};
+use Firebase\JWT\{
+    BeforeValidException,
+    SignatureInvalidException
+};
+use Modules\Auth\Services\Tokens\Exceptions\TokenException;
 
 class JwtManager implements TokenManager
 {
@@ -78,12 +91,25 @@ class JwtManager implements TokenManager
         );
     }
 
-    public static function validateToken(string $token): stdClass
+    public function decode(string $token): stdClass
     {   
-        $alg = config('jwt.alg');
-        JWTKeyManager::loadKeys($alg);
-        $privateKey = JWTKeyManager::getPrivateKey();
-        $decoded = JWT::decode($token, new Key($privateKey, $alg));
-        return $decoded;
+        try {
+            return JWT::decode($token, new Key($this->privateKey, $this->alg));
+        } catch (ExpiredException $e) {
+            throw new TokenException('Token has expired', 401, $e);
+        } catch (SignatureInvalidException | BeforeValidException | UnexpectedValueException $e) {
+            throw new TokenException('Invalid token signature or structure', 401, $e);
+        } catch (\Exception $e) {
+            Log::error('JWT error: ' . $e->getMessage(), [
+                'exception'        => get_class($e),
+                'file'             => $e->getFile(),
+                'line'             => $e->getLine(),
+                'code'             => $e->getCode(),
+                'previous'         => $e->getPrevious() ? get_class($e->getPrevious()) : null,
+                'trace_snippet'    => collect($e->getTrace())->take(5)->toArray(),
+                'timestamp'        => now()->toIso8601String(),
+            ]);
+            throw new TokenException('Could not validate token', 500, $e);
+        }
     }
 }
