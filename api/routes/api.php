@@ -42,5 +42,5 @@ Route::prefix('ubigeo')->group(function(){
 
 Route::prefix('accounts')->group(function(){
     Route::get('token', [TokenController::class, 'generate'])->middleware('anti.bot:api,3,6');
-    Route::get('register', [AccountController::class, 'register'])->middleware('anti.bot:api,3,2'); 
+    Route::get('register', [AccountController::class, 'register'])->middleware('anti.bot:api,6,2'); 
 });

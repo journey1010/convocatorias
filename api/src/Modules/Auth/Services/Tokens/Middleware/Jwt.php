@@ -3,14 +3,8 @@
 namespace Modules\Auth\Services\Tokens\Middleware;
 
 use Closure;
-use Exception;
 use Illuminate\Http\Request;
-use UnexpectedValueException;
-use Firebase\JWT\ExpiredException;
-use Illuminate\Support\Facades\Log;
 use Modules\Auth\Services\Tokens\JwtManager;
-use Firebase\JWT\BeforeValidException;
-use Firebase\JWT\SignatureInvalidException;
 use Symfony\Component\HttpFoundation\Response;
 use Modules\Auth\Services\Tokens\Middleware\AccessToken;
 use Modules\Auth\Services\Tokens\Middleware\RefreshToken;

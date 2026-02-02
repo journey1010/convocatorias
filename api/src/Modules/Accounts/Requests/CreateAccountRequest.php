@@ -10,12 +10,14 @@ class CreateAccountRequest extends Template {
     public function rules(): array
     {
         return [
+            'token' => 'required|string',
+            'g-recaptcha-response' => 'required|recaptchav3:register,0.5', 
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'dni' => 'required|string|regex:/^\d{8}$/|unique:users,dni',
             'email' => 'required|email|unique:users,email',
             'password' => ['required', Password::min(7)->letters()->numbers()],
-            'phone' => ['nullable', 'string', 'regex:/^9\d{8}$/'],
+            'phone' => ['required', 'string', 'regex:/^9\d{8}$/'],
         ];
     }
     
@@ -30,6 +32,7 @@ class CreateAccountRequest extends Template {
             'password.numbers' => 'La contraseña debe contener números.',
             'password.letters' => 'La contraseña debe contener letras.',
             'phone.regex' => 'Número de telefono invalido.',
+            'g-recaptcha-response.recaptchav3' => 'Error al validar el reCAPTCHA, por favor intente de nuevo.',
         ];
     }
 }
