@@ -14,17 +14,16 @@ class VerifyCredentialQueryService
     {
         return DB::table('users')
             ->select([
-                'id', 
                 'name',
                 'last_name',
                 'dni',
                 'nickname',
-                'phone',
                 'email',
+                'phone',
+                'password',
                 'status',
                 'level',
-                'password',
-                'token_version'
+                'type_user',
             ])
             ->when(is_int($userIdentifier), fn($q) => $q->where('id', $userIdentifier))
             ->when(is_string($userIdentifier), fn($q) => $q->where('nickname', $userIdentifier))

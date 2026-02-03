@@ -6,15 +6,13 @@ use Modules\User\Models\OfficeUser;
 use Modules\User\Models\Dtos\UserAuthDTO;
 use Illuminate\Support\Facades\{Cache, Hash};
 use Infrastructure\Exceptions\JsonResponseException;
+use Modules\User\Enums\StatusUser;
 use Modules\User\Models\QueryServices\VerifyCredentialQueryService;
 
 class UserAuth extends VerifyCredentialQueryService {
     
     private const CACHE_TTL = 2678400;
     private const CACHE_PREFIX = 'user_auth_';
-
-    private const STATUS_SUSPENDED_MANUAL = 0;
-    private const STATUS_SUSPENDED_AUTO = 2;
 
     public function verifyCredentials(string $nickname, string $password): UserAuthDTO
     {
@@ -28,7 +26,7 @@ class UserAuth extends VerifyCredentialQueryService {
 
         $permissions = $this->getUserPermissions($user->id);
         
-        $offices = $this->getOfficeUser($user->id);
+        $offices = $user->  $this->getOfficeUser($user->id);
         
         $userDto = new UserAuthDTO(
             id: $user->id,
@@ -39,7 +37,6 @@ class UserAuth extends VerifyCredentialQueryService {
             phone: $user->phone,
             email: $user->email,
             level: $user->level, 
-            token_version: $user->token_version,
             offices: $offices,
             permissions: $permissions
         );
@@ -78,7 +75,6 @@ class UserAuth extends VerifyCredentialQueryService {
             phone: $user->phone,
             email: $user->email,
             level: $user->level, 
-            token_version: $user->token_version,
             offices: $offices,
             permissions: $permissions
         );
@@ -103,16 +99,16 @@ class UserAuth extends VerifyCredentialQueryService {
 
     private function validateUserStatus(int $status): void
     {
-        if ($status === self::STATUS_SUSPENDED_MANUAL) {
+        if ($status === StatusUser::INACTIVE->value) {
             throw new JsonResponseException(
-                'Usuario suspendido. Contacte con el área de Soporte Informático para más información', 
+                'Usuario inactivo. Contacte con el área de Soporte Informático para más información', 
                 401
             );
         }
 
-        if ($status === self::STATUS_SUSPENDED_AUTO) {
+        if ($status === StatusUser::SUSPENDED->value) {
             throw new JsonResponseException(
-                'Usuario suspendido de forma automática. Contacte con el área de Soporte Informático para más información', 
+                'Usuario suspendido. Contacte con el área de Soporte Informático para más información', 
                 401
             );
         }
@@ -127,5 +123,4 @@ class UserAuth extends VerifyCredentialQueryService {
     {
         return Cache::get(self::CACHE_PREFIX . $userId);
     }
-
 }

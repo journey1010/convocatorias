@@ -2,7 +2,7 @@
 
 namespace Modules\User\Models\Dtos;
 
-class UserAuthDTO {
+class UserAuthDTO implements \JsonSerializable {
 
     /**
      * @param int $id ID único del usuario
@@ -24,11 +24,16 @@ class UserAuthDTO {
         public readonly string $last_name,
         public readonly string $dni, 
         public readonly string $nickname,
-        public readonly ?string $phone,
         public readonly ?string $email,
+        public readonly ?string $phone,
         public readonly int    $level,
-        public readonly int    $token_version, 
         public readonly array  $offices,
         public readonly array  $permissions
     ) {}
+
+    public function jsonSerialize(): array {
+        return array_filter(get_object_vars($this), function ($value) {
+            return !is_null($value);
+        });
+    }
 }
