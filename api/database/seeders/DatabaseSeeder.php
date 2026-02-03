@@ -6,12 +6,11 @@ use Infrastructure\SeederTracker;
 use Database\Seeders\{
     Rbac,
     Ubigeo,
-    User, 
+    User
 };
 
 class DatabaseSeeder extends SeederTracker
-{
-    
+{   
     public function run(): void
     {
         $this->callIfNotExecuted(Ubigeo::class);

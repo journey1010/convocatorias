@@ -3,13 +3,15 @@
 namespace Modules\Accounts\Applications;
 
 use Illuminate\Http\Request;
-use Modules\{
-    Auth\Services\Tokens\JwtManager,
-    Auth\Services\Tokens\Exceptions\TokenException,
-    Auth\Services\Tokens\Enum\TokenType,
-    User\Models\User,
-    User\Enums\TypeUser,
-    User\Enums\StatusUser
+use Modules\Auth\Services\Tokens\{
+    JwtManager,
+    Exceptions\TokenException,
+    Enum\TokenType,
+};
+use Modules\User\{
+    Models\User,
+    Enums\TypeUser,
+    Enums\StatusUser
 };
 use Infrastructure\Exceptions\JsonResponseException;
 use Modules\Accounts\Applications\Dtos\RegisterAccountDto;
