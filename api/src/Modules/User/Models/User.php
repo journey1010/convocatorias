@@ -21,13 +21,14 @@ class User extends Authenticatable implements LaratrustUser
         'dni',
         'nickname',
         'email',
+        'email_verified_at',
+        'phone_verified_at',
         'phone',
         'password',
         'status',
-        'token_version',
-        'number_login_device',
-        'level',
         'created_by',
+        'level',
+        'type_user',
     ];
 
     protected $hidden = [
@@ -39,6 +40,7 @@ class User extends Authenticatable implements LaratrustUser
     {
         return [
             'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
