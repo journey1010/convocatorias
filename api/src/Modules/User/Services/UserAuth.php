@@ -2,11 +2,16 @@
 
 namespace Modules\User\Services;
 
-use Modules\User\Models\OfficeUser;
-use Modules\User\Models\Dtos\UserAuthDTO;
+use Modules\User\Models\{
+    OfficeUser,
+    Dtos\UserAuthDTO 
+};
 use Illuminate\Support\Facades\{Cache, Hash};
 use Infrastructure\Exceptions\JsonResponseException;
-use Modules\User\Enums\StatusUser;
+use Modules\User\Enums\{
+    StatusUser,
+    TypeUser
+};
 use Modules\User\Models\QueryServices\VerifyCredentialQueryService;
 
 class UserAuth extends VerifyCredentialQueryService {
@@ -26,7 +31,7 @@ class UserAuth extends VerifyCredentialQueryService {
 
         $permissions = $this->getUserPermissions($user->id);
         
-        $offices = $user->  $this->getOfficeUser($user->id);
+        $offices = $user->type_user == TypeUser::employee->value ? $this->getOfficeUser($user->id) : [];
         
         $userDto = new UserAuthDTO(
             id: $user->id,
