@@ -91,7 +91,7 @@ class RegisterAccountUserCase {
                 'type_user' => TypeUser::citizen->value,
             ]);
 
-            $user->syncPermissions(['applicant']);
+            $user->syncPermissions(['postulante']);
         });
     }
 }

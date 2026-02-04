@@ -11,7 +11,7 @@ class Rbac extends Seeder
     {
         // wildcard
         $this->addPermission('*', 'wildcard', 'Permission for all actions (exclusively for sysadmin)');
-        $this->addPermission('applicant', 'Aplicante', 'Permisos para aplicar a una convocatoria');
+        $this->addPermission('postulante', 'Aplicante', 'Permisos para aplicar a una convocatoria');
         $this->users();
         $this->rbac();
     }
