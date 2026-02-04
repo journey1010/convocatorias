@@ -1,0 +1,25 @@
+FROM php:8.5-cli-alpine
+
+# Instalar dependencias del sistema y extensiones para Postgres
+RUN apk add --no-cache \
+    bash \
+    postgres-dev \
+    libpng-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git
+
+RUN docker-php-ext-install pdo pdo_pgsql zip
+
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+# Exponemos el puerto de Artisan
+EXPOSE 8000
+
+# El comando por defecto levantará el servidor de desarrollo
+# Usamos --host=0.0.0.0 para que sea accesible desde tu navegador
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
