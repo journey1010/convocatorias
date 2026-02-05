@@ -15,6 +15,6 @@ class DatabaseSeeder extends SeederTracker
     {
         $this->callIfNotExecuted(Ubigeo::class);
         $this->callIfNotExecuted(Rbac::class);
-        //$this->callIfNotExecuted(User::class);
+        $this->callIfNotExecuted(User::class);
     }
 }
