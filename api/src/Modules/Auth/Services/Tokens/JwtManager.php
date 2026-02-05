@@ -60,7 +60,7 @@ class JwtManager implements TokenManager
         return JWT::encode($payload, $this->privateKey, $this->alg);
     }
 
-    public function generateAccessToken(int|string $subject, ?int $version = null, ?array $claims = null): string
+    public function generateAccessToken(int|string $subject, ?array $claims = null): string
     {
         $this->accessTtl  =  config('jwt.ttl_access'); 
         return $this->generateToken(
@@ -71,7 +71,7 @@ class JwtManager implements TokenManager
         );
     }
 
-    public function generateRefreshToken(int|string $subject, ?int $version = null): string
+    public function generateRefreshToken(int|string $subject): string
     {
         $this->refreshTtl = config('jwt.ttl_refresh');
         return $this->generateToken(

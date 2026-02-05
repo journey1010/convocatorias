@@ -19,7 +19,6 @@ class LoginUserCase {
 
         $accessToken = $this->jwt->generateAccessToken(
             $user->id,
-            $user->token_version,
             [
                 'dni' => $user->dni,
                 'level' => $user->level,
@@ -28,7 +27,7 @@ class LoginUserCase {
             ]
         );
 
-        $refreshToken = $this->jwt->generateRefreshToken($user->id, $user->token_version);
+        $refreshToken = $this->jwt->generateRefreshToken($user->id);
 
         $offices = implode(',', $user->offices['names']);
 

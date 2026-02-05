@@ -6,7 +6,7 @@ use stdClass;
 
 interface TokenManager
 {
-    public function generateAccessToken(int|string $subject, ?int $version = null, ?array $claims = null): string;
-    public function generateRefreshToken(int|string $subject, ?int $version = null): string;
+    public function generateAccessToken(int|string $subject, ?array $claims = null): string;
+    public function generateRefreshToken(int|string $subject) : string;
     public function decode(string $token):  stdClass;
 }

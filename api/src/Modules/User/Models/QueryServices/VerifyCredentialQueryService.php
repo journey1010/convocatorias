@@ -14,6 +14,7 @@ class VerifyCredentialQueryService
     {
         return DB::table('users')
             ->select([
+                'id',
                 'name',
                 'last_name',
                 'dni',
