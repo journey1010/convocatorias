@@ -1,0 +1,22 @@
+name: laravel-api-dev
+
+services:
+  app:
+    build: .
+    container_name: laravel-app
+    ports:
+      - "8000:8000" # Mapea el puerto para Postman (Local:Contenedor)
+    volumes:
+      - .:/var/www/html
+    networks:
+      - web-stack
+    environment:
+      - DB_HOST=postgresql-global
+      - DB_CONNECTION=pgsql
+    # Esto asegura que si el comando falla (por falta de vendor), el contenedor no muera
+    stdin_open: true 
+    tty: true
+
+networks:
+  web-stack:
+    external: true
