@@ -3,13 +3,9 @@
 namespace Modules\Accounts\Controllers;
 
 use Illuminate\Http\Request;
-use Modules\Accounts\Requests\{
-    StorePersonalDataExtraRequest,
-    UpdatePersonalDataExtraRequest,
-};
+use Modules\Accounts\Requests\UpsertPersonalDataExtraRequest;
 use Modules\Accounts\Applications\{
-    StorePersonalDataExtraCase,
-    UpdatePersonalDataExtraCase,
+    UpsertPersonalDataExtraCase,
     GetCertificateFileCase,
 };
 use Modules\Accounts\Repositories\PersonalDataExtraRepository;
@@ -19,10 +15,10 @@ use Infrastructure\Exceptions\JsonResponseException;
 
 class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
 {
-    public function store(StorePersonalDataExtraRequest $request, StorePersonalDataExtraCase $case    ): JsonResponse {
+    public function upsert(UpsertPersonalDataExtraRequest $request, UpsertPersonalDataExtraCase $case): JsonResponse {
         $authenticatedUserId = $this->getAuthenticatedUserId($request);
 
-        $dto = $this->mapRequestToStoreDto($request, $authenticatedUserId);
+        $dto = $this->mapRequestToUpsertDto($request, $authenticatedUserId);
         $result = $case->exec($dto, $authenticatedUserId);
 
         return response()->json($result, 201);
@@ -36,18 +32,6 @@ class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
         $personalData = $repository->getByUserIdOrFail($authenticatedUserId);
 
         return response()->json($personalData);
-    }
-
-    public function update(
-        UpdatePersonalDataExtraRequest $request,
-        UpdatePersonalDataExtraCase $case
-    ): JsonResponse {
-        $authenticatedUserId = $this->getAuthenticatedUserId($request);
-
-        $dto = $this->mapRequestToUpdateDto($request, $authenticatedUserId);
-        $result = $case->exec($dto, $authenticatedUserId);
-
-        return response()->json($result);
     }
 
     public function downloadCertificate(
@@ -71,29 +55,9 @@ class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
         return $userId;
     }
 
-    private function mapRequestToStoreDto(StorePersonalDataExtraRequest $request, int $userId)
+    private function mapRequestToUpsertDto(UpsertPersonalDataExtraRequest $request, int $userId)
     {
         return new \Modules\Accounts\Applications\Dtos\StorePersonalDataExtraDto(
-            user_id: $userId,
-            department_id: $request->input('department_id'),
-            province_id: $request->input('province_id'),
-            district_id: $request->input('district_id'),
-            address: $request->input('address'),
-            birthday: $request->input('birthday'),
-            genere: $request->input('genere'),
-            have_cert_disability: $request->boolean('have_cert_disability'),
-            file_cert_disability: $request->file('file_cert_disability'),
-            have_cert_army: $request->boolean('have_cert_army'),
-            file_cert_army: $request->file('file_cert_army'),
-            have_cert_professional_credentials: $request->boolean('have_cert_professional_credentials'),
-            file_cert_professional_credentials: $request->file('file_cert_professional_credentials'),
-            is_active_cert_professional_credentials: $request->boolean('is_active_cert_professional_credentials'),
-        );
-    }
-
-    private function mapRequestToUpdateDto(UpdatePersonalDataExtraRequest $request, int $userId)
-    {
-        return new \Modules\Accounts\Applications\Dtos\UpdatePersonalDataExtraDto(
             user_id: $userId,
             department_id: $request->input('department_id'),
             province_id: $request->input('province_id'),

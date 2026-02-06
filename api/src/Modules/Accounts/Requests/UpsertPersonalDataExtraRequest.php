@@ -4,11 +4,11 @@ namespace Modules\Accounts\Requests;
 
 use Modules\Shared\Requests\Template;
 
-class StorePersonalDataExtraRequest extends Template
+class UpsertPersonalDataExtraRequest extends Template
 {
     public function authorize(): bool
     {
-        return $this->verifyPermission($this->attributes->get(''), []);
+        return $this->verifyPermission($this->attributes->get('permissions'), ['p.postulante']);
     }
 
     public function rules(): array
@@ -21,11 +21,11 @@ class StorePersonalDataExtraRequest extends Template
             'birthday' => 'required|date|before:today',
             'genere' => 'required|integer|in:1,2,3',
             'have_cert_disability' => 'required|boolean',
-            'file_cert_disability' => 'nullable|required_if:have_cert_disability,true|mimes:pdf|max:4096',
+            'file_cert_disability' => 'nullable|required_if:have_cert_disability,true|file|mimes:pdf|max:4096',
             'have_cert_army' => 'required|boolean',
-            'file_cert_army' => 'nullable|required_if:have_cert_army,true|mimes:pdf|max:4096',
+            'file_cert_army' => 'nullable|required_if:have_cert_army,true|file|mimes:pdf|max:4096',
             'have_cert_professional_credentials' => 'required|boolean',
-            'file_cert_professional_credentials' => 'nullable|required_if:have_cert_professional_credentials,true|mimes:pdf|max:4096',
+            'file_cert_professional_credentials' => 'nullable|required_if:have_cert_professional_credentials,true|file|mimes:pdf|max:4096',
             'is_active_cert_professional_credentials' => 'required|boolean',
         ];
     }

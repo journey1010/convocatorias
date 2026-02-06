@@ -45,9 +45,8 @@ Route::prefix('accounts')->group(function(){
     Route::get('register', [AccountController::class, 'register'])->middleware('anti.bot:register_action,6,2');
     
     Route::prefix('personal-data')->middleware('jwt:internal')->group(function(){
-        Route::post('/', [PersonalDataExtraController::class, 'store']);
-        Route::get('/', [PersonalDataExtraController::class, 'show']);
-        Route::patch('/', [PersonalDataExtraController::class, 'update']);
+        Route::post('/', [PersonalDataExtraController::class, 'upsert']);
+        //Route::get('/', [PersonalDataExtraController::class, 'show']);
         Route::get('certificate/{certificateType}', [PersonalDataExtraController::class, 'downloadCertificate']);
     });
 });

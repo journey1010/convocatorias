@@ -9,7 +9,7 @@ class District extends Model
 {
     protected $fillable = [
         'province_id',
-        'district_id',
+        'department_id',
         'name',
     ];
 
