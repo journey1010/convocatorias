@@ -6,7 +6,7 @@ use Modules\User\Controllers\UserController;
 use Modules\Rbac\Controllers\RbacController;
 use Modules\Ubigeo\Controllers\UbigeoController;
 use Modules\Office\Controllers\OfficeController;
-Use Modules\Accounts\Controllers\{TokenController, AccountController};
+Use Modules\Accounts\Controllers\{TokenController, AccountController, PersonalDataExtraController};
 
 Route::prefix('/auth/')->group(function(){
     Route::post('login', [AuthController::class, 'login']);
@@ -42,5 +42,12 @@ Route::prefix('ubigeo')->group(function(){
 
 Route::prefix('accounts')->group(function(){
     Route::get('token', [TokenController::class, 'generate'])->middleware('anti.bot:token_request,3,6');
-    Route::get('register', [AccountController::class, 'register'])->middleware('anti.bot:register_action,6,2'); 
+    Route::get('register', [AccountController::class, 'register'])->middleware('anti.bot:register_action,6,2');
+    
+    Route::prefix('personal-data')->middleware('jwt:internal')->group(function(){
+        Route::post('/', [PersonalDataExtraController::class, 'store']);
+        Route::get('/', [PersonalDataExtraController::class, 'show']);
+        Route::patch('/', [PersonalDataExtraController::class, 'update']);
+        Route::get('certificate/{certificateType}', [PersonalDataExtraController::class, 'downloadCertificate']);
+    });
 });
