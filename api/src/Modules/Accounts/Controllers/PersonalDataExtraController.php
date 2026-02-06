@@ -15,7 +15,8 @@ use Infrastructure\Exceptions\JsonResponseException;
 
 class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
 {
-    public function upsert(UpsertPersonalDataExtraRequest $request, UpsertPersonalDataExtraCase $case): JsonResponse {
+    public function upsert(UpsertPersonalDataExtraRequest $request, UpsertPersonalDataExtraCase $case): JsonResponse 
+    {
         $authenticatedUserId = $this->getAuthenticatedUserId($request);
 
         $dto = $this->mapRequestToUpsertDto($request, $authenticatedUserId);
@@ -24,23 +25,16 @@ class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
         return response()->json($result, 201);
     }
 
-    public function show(
-        Request $request,
-        PersonalDataExtraRepository $repository
-    ): JsonResponse {
+    public function show(Request $request, PersonalDataExtraRepository $repository): JsonResponse 
+    {
         $authenticatedUserId = $this->getAuthenticatedUserId($request);
-        $personalData = $repository->getByUserIdOrFail($authenticatedUserId);
-
+        $personalData = $repository->findByUserId($authenticatedUserId);
         return response()->json($personalData);
     }
 
-    public function downloadCertificate(
-        Request $request,
-        string $certificateType,
-        GetCertificateFileCase $case
-    ): BinaryFileResponse {
+    public function downloadCertificate(Request $request, string $certificateType, GetCertificateFileCase $case): BinaryFileResponse 
+    {
         $authenticatedUserId = $this->getAuthenticatedUserId($request);
-        
         return $case->exec($certificateType, $authenticatedUserId);
     }
 

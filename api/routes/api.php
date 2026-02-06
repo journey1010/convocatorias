@@ -46,7 +46,7 @@ Route::prefix('accounts')->group(function(){
     
     Route::prefix('personal-data')->middleware('jwt:internal')->group(function(){
         Route::post('/', [PersonalDataExtraController::class, 'upsert']);
-        //Route::get('/', [PersonalDataExtraController::class, 'show']);
+        Route::get('/', [PersonalDataExtraController::class, 'show']);
         Route::get('certificate/{certificateType}', [PersonalDataExtraController::class, 'downloadCertificate']);
     });
 });

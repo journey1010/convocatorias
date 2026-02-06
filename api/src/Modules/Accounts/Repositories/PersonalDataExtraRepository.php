@@ -7,6 +7,7 @@ use Infrastructure\Exceptions\JsonResponseException;
 
 class PersonalDataExtraRepository
 {
+
     public function findByUserId(int $user_id): ?PersonalDataExtra
     {
         return PersonalDataExtra::where('user_id', $user_id)->first();

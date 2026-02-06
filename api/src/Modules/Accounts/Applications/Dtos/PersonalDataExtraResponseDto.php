@@ -5,8 +5,6 @@ namespace Modules\Accounts\Applications\Dtos;
 class PersonalDataExtraResponseDto
 {
     public function __construct(
-        public readonly int $id,
-        public readonly int $user_id,
         public readonly int $department_id,
         public readonly int $province_id,
         public readonly int $district_id,
@@ -25,8 +23,6 @@ class PersonalDataExtraResponseDto
     public static function fromModel($model): self
     {
         return new self(
-            id: $model->id,
-            user_id: $model->user_id,
             department_id: $model->department_id,
             province_id: $model->province_id,
             district_id: $model->district_id,
