@@ -8,7 +8,7 @@ class StorePersonalDataExtraRequest extends Template
 {
     public function authorize(): bool
     {
-        return ;
+        return $this->verifyPermission($this->attributes->get(''), []);
     }
 
     public function rules(): array
