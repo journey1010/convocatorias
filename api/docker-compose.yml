@@ -11,8 +11,7 @@ services:
     networks:
       - web-stack
     environment:
-      - DB_HOST=postgresql-global
-      - DB_CONNECTION=pgsql
+      - .env
     # Esto asegura que si el comando falla (por falta de vendor), el contenedor no muera
     stdin_open: true 
     tty: true
