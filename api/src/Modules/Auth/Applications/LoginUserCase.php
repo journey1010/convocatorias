@@ -13,23 +13,18 @@ class LoginUserCase {
         private UserAuth $user
     ) {}
 
-    public function exec(string $nickname, string $password): LoginUserDto
+   public function exec(string $nickname, string $password): LoginUserDto
     {
         $user = $this->user->verifyCredentials($nickname, $password);
-
+        
+        $claims = $user->toClaims();
+        
         $accessToken = $this->jwt->generateAccessToken(
             $user->id,
-            [
-                'dni' => $user->dni,
-                'level' => $user->level,
-                'permissions' => implode(',', $user->permissions['ids']),
-                'office_ids' => $user->offices['ids']
-            ]
+            $claims->toArray()
         );
-
+        
         $refreshToken = $this->jwt->generateRefreshToken($user->id);
-
-        $offices = implode(',', $user->offices['names']);
 
         return new LoginUserDto(
             $user->name,
@@ -37,8 +32,8 @@ class LoginUserCase {
             $user->dni,
             $user->email,
             $user->nickname,
-            $user->permissions['names'],
-            $offices,
+            $user->getPermissionNames(),
+            $user->getOfficeNames(),
             $accessToken,
             $refreshToken,
         );

@@ -3,8 +3,7 @@
 namespace Modules\User\Services;
 
 use Modules\User\Models\{
-    OfficeUser,
-    Dtos\UserAuthDTO 
+    OfficeUser
 };
 use Illuminate\Support\Facades\{Cache, Hash};
 use Infrastructure\Exceptions\JsonResponseException;
@@ -12,6 +11,7 @@ use Modules\User\Enums\{
     StatusUser,
     TypeUser
 };
+use Modules\User\Models\Dtos\{UserAuthDTO, UserAuthDTOBuilder};
 use Modules\User\Models\QueryServices\VerifyCredentialQueryService;
 
 class UserAuth extends VerifyCredentialQueryService {
@@ -19,39 +19,43 @@ class UserAuth extends VerifyCredentialQueryService {
     private const CACHE_TTL = 2678400;
     private const CACHE_PREFIX = 'user_auth_';
 
-    public function verifyCredentials(string $nickname, string $password): UserAuthDTO
+public function verifyCredentials(string $nickname, string $password): UserAuthDTO
     {
         $user = $this->searchByNickname($nickname);
-        
+
         if (!$user || !Hash::check($password, $user->password)) {
             throw new JsonResponseException('Credenciales incorrectas', 401);
         }
 
         $this->validateUserStatus($user->status);
 
-        $permissions = $this->getUserPermissions($user->id);
-        
-        $offices = $user->type_user == TypeUser::employee->value ? $this->getOfficeUser($user->id) : [];
-        
-        $userDto = new UserAuthDTO(
+        $builder = new UserAuthDTOBuilder(
             id: $user->id,
             name: $user->name,
             last_name: $user->last_name,
-            dni: $user->dni, 
+            dni: $user->dni,
             nickname: $user->nickname,
             phone: $user->phone,
             email: $user->email,
-            level: $user->level, 
-            offices: $offices,
-            permissions: $permissions
+            level: $user->level
         );
 
+        // Agregar permisos siempre
+        $builder->withPermissions($this->getUserPermissions($user->id));
+
+        // Agregar oficinas solo para empleados
+        if ($user->type_user == TypeUser::employee->value) {
+            $builder->withOffices($this->getOfficeUser($user->id));
+        }
+
+        $userDto = $builder->build();
+
         Cache::put(
-            key: self::CACHE_PREFIX . $user->id, 
-            value: $userDto, 
+            key: self::CACHE_PREFIX . $user->id,
+            value: $userDto,
             ttl: self::CACHE_TTL
         );
-        
+
         return $userDto;
     }
 
