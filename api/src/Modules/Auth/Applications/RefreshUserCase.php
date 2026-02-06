@@ -7,8 +7,8 @@ use Modules\Auth\Applications\Dtos\LoginUserDto;
 use Modules\Auth\Services\Tokens\JwtManager;
 use Modules\User\Services\UserAuth;
 
-class RefreshUserCase {
-
+class RefreshUserCase 
+{
     private const REFRESH_THRESHOLD = 8000000;
 
     public function __construct(
@@ -20,22 +20,19 @@ class RefreshUserCase {
     {
         $user = $this->user->refreshUser($user_id);
         
+        // ⭐ Generar claims automáticamente desde el DTO
+        $claims = $user->toClaims();
+        
+        // ⭐ Generar access token con TODOS los claims automáticamente
         $accessToken = $this->jwt->generateAccessToken(
             $user->id,
-            $user->token_version,
-            [
-                'dni' => $user->dni,
-                'level' => $user->level,
-                'permissions' => implode(',', $user->permissions['ids']),
-                'office_ids' => $user->offices['ids']
-            ]
+            $claims->toArray() // Pasar todos los claims dinámicamente
         );
-
-        $refreshToken = ($exp !== null && ($exp - time()) < self::REFRESH_THRESHOLD)
-            ? $this->jwt->generateRefreshToken($user->id, $user->token_version)
-            : $token ?? throw new JsonResponseException('Unauthorized, token not provided', 401);
         
-        $offices = implode(',', $user->offices['names']);
+        // Determinar si necesitamos generar un nuevo refresh token
+        $refreshToken = ($exp !== null && ($exp - time()) < self::REFRESH_THRESHOLD)
+            ? $this->jwt->generateRefreshToken($user->id)
+            : $token ?? throw new JsonResponseException('Unauthorized, token not provided', 401);
 
         return new LoginUserDto(
             $user->name,
@@ -43,8 +40,8 @@ class RefreshUserCase {
             $user->dni,
             $user->email,
             $user->nickname,
-            $user->permissions['names'],
-            $offices,
+            $user->getPermissionNames(),
+            $user->getOfficeNames(),
             $accessToken,
             $refreshToken,
         );

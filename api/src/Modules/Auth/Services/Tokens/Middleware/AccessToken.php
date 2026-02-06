@@ -10,15 +10,16 @@ class AccessToken implements TypeClient
 {   
     public static function execute(Request $request, stdClass $claims): void
     {
-        $attributes = [
-            'sub' => $claims->sub,
-            'dni' => $claims->dni, 
-            'level' => $claims->level, 
-            'office_ids' => $claims->office_ids, 
-            'permissions' => $claims->permissions, 
-            'type_client' => $claims->type_client
-        ];
+        $claimsArray = (array) $claims;
+
+        $reserved = ['iss', 'iat', 'exp', 'nbf', 'jti'];
+        
+        $attributes = array_diff_key($claimsArray, array_flip($reserved));
 
         $request->attributes->add($attributes);
+        
+        if (!$request->attributes->has('office_ids')) {
+             $request->attributes->set('office_ids', []);
+        }
     }
 }

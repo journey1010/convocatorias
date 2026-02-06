@@ -4,22 +4,17 @@ namespace Modules\Auth\Services\Tokens\Middleware;
 
 use Modules\Auth\Services\Tokens\Contracts\TypeClient;
 use Illuminate\Http\Request;
-use stdClass; 
+use stdClass;
 
-class AccessToken implements TypeClient
-{   
-    public static function execute(Request $request, stdClass $claims): void
+class RefreshToken implements TypeClient
+{
+    public static function execute(Request $request, stdClass $claims)
     {
-        $claimsArray = (array) $claims;
-
-        $reserved = ['iss', 'iat', 'exp', 'nbf', 'jti'];
-        
-        $attributes = array_diff_key($claimsArray, array_flip($reserved));
+        $attributes = [
+            'sub' => $claims->sub,
+            'exp' => $claims->exp,
+        ];
 
         $request->attributes->add($attributes);
-        
-        if (!$request->attributes->has('office_ids')) {
-             $request->attributes->set('office_ids', []);
-        }
     }
 }
