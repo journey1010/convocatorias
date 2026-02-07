@@ -44,6 +44,7 @@ return [
             'serve' => true,
             'throw' => false,
             'report' => false,
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/api/disk/private',
         ],
 
         'public' => [
