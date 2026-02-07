@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 use Modules\Accounts\Applications\Dtos\{StorePersonalDataExtraDto, PersonalDataExtraResponseDto};
 use Modules\Accounts\Repositories\PersonalDataExtraRepository;
 use Modules\Accounts\Services\FileStorageService;
-use Infrastructure\Exceptions\JsonResponseException;
 
 class UpsertPersonalDataExtraCase
 {

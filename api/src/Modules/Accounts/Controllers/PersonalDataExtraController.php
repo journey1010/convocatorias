@@ -7,6 +7,7 @@ use Modules\Accounts\Requests\UpsertPersonalDataExtraRequest;
 use Modules\Accounts\Applications\{
     UpsertPersonalDataExtraCase,
     GetCertificateFileCase,
+    Dtos\PersonalDataExtraResponseDto
 };
 use Modules\Accounts\Repositories\PersonalDataExtraRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +30,8 @@ class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
     {
         $authenticatedUserId = $this->getAuthenticatedUserId($request);
         $personalData = $repository->findByUserId($authenticatedUserId);
-        return response()->json($personalData);
+        $responseDto = PersonalDataExtraResponseDto::fromModel($personalData);
+        return response()->json($responseDto);
     }
 
     public function downloadCertificate(Request $request, string $certificateType, GetCertificateFileCase $case): BinaryFileResponse 
