@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('offices', function (Blueprint $table) {
+        Schema::create('locales', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); 
-            $table->foreignId('locale_id')->constrained('locales');
-            $table->unsignedInteger('level')->default(1);
-            $table->boolean('status')->default(true);
+            $table->string('name');
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('offices');
+        Schema::dropIfExists('locales');
     }
 };

@@ -12,6 +12,7 @@ use Modules\Accounts\Repositories\PersonalDataExtraRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Infrastructure\Exceptions\JsonResponseException;
+use Modules\User\Services\UserAuthMeta;
 
 class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
 {
@@ -33,9 +34,16 @@ class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
     }
 
     public function downloadCertificate(Request $request, string $certificateType, GetCertificateFileCase $case): BinaryFileResponse 
-    {
+    {        
         $authenticatedUserId = $this->getAuthenticatedUserId($request);
-        return $case->exec($certificateType, $authenticatedUserId);
+        return $case->exec(
+            $certificateType, 
+            new UserAuthMeta(
+                $authenticatedUserId, 
+                $request->attributes->get('permissions'),
+                $request->attributes->get('office_ids'),
+                $request->attributes->get('locales'), 
+            ));
     }
 
     private function getAuthenticatedUserId(Request $request): int

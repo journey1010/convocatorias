@@ -9,9 +9,9 @@ trait AccessControlServices {
     
     public array $permission_users = [];
 
-    protected function verifyPermission(string $stringPermission, string|array $permission, bool $strict = false): bool
+    protected function verifyPermission(string $stringPermissionUser, string|array $permission, bool $strict = false): bool
     {
-        $this->permission = $this->generateCacheKey($stringPermission);
+        $this->permission = $this->generateCacheKey($stringPermissionUser);
         if (in_array('*', $this->permission)) {
             return true;
         }

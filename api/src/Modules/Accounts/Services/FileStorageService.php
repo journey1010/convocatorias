@@ -10,6 +10,8 @@ class FileStorageService
 {
     private const STORAGE_PATH = 'personal_data_certs';
 
+    public string $user_id; 
+
     public function storeCertificate(UploadedFile $file, string $type): string
     {
         $datePath = now()->format('Y/m'); 
@@ -45,6 +47,6 @@ class FileStorageService
 
     private function generateFileName(string $type): string
     {
-        return "{$type}_" . time() . '_' . uniqid() . '.pdf';
+        return "{$type}_" . "{$this->user_id}_" . time() . '_' . uniqid() . '.pdf';
     }
 }

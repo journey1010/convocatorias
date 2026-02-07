@@ -1,39 +1,35 @@
-<?php
-
+<?php 
 namespace Modules\Accounts\Applications;
 
 use Illuminate\Support\Facades\Storage;
-use Modules\Accounts\Repositories\PersonalDataExtraRepository;
 use Infrastructure\Exceptions\JsonResponseException;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse; 
+use Modules\User\Services\UserAuthMeta;
+use Modules\Accounts\Policies\PersonalDataPolicy;
 
 class GetCertificateFileCase
 {
-    public function __construct(private PersonalDataExtraRepository $repository) {}
+    public function __construct(private PersonalDataPolicy $policy) {}
 
-    public function exec(string $requestedPath, int $authenticatedUserId): BinaryFileResponse
+    public function exec(string $requestedPath, UserAuthMeta $userAuth) : BinaryFileResponse
     {
         $fileName = basename($requestedPath);
+        $parts = explode('_', $fileName);
+        
+        if (count($parts) < 2 || !ctype_digit($parts[1])) {
+            throw new JsonResponseException('El archivo no existe.', 400);
+        }
 
-        $fileType = explode('_', $fileName)[0];
+        $fileOwnerId = (int) $parts[1];
 
-        $columnMap = [
-            'disability'               => 'file_cert_disability',
-            'army'                     => 'file_cert_army',
-            'professional'             => 'file_cert_professional_credentials',
-        ];
-
-        $column = $columnMap[$fileType] ?? null;
-
-        // 4. Validar propiedad y existencia en la columna específica
-        if (!$column || !$this->repository->existsPathInColumn($authenticatedUserId, $column, $requestedPath)) {
-            throw new JsonResponseException('Acceso denegado o archivo no válido.', 403);
+        if (!$this->policy->viewCertificate($userAuth, $fileOwnerId)) {
+            throw new JsonResponseException('No tiene permiso para ver este documento.', 403);
         }
 
         if (!Storage::disk('private')->exists($requestedPath)) {
             throw new JsonResponseException('Archivo no encontrado en el servidor.', 404);
         }
 
-        return response()->download(Storage::disk('private')->path($requestedPath));
+        return response()->file(Storage::disk('private')->path($requestedPath));
     }
 }

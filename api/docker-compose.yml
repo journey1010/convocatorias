@@ -2,7 +2,12 @@ name: laravel-api-dev
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args: 
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
     container_name: laravel-app
     ports:
       - "8000:8000" # Mapea el puerto para Postman (Local:Contenedor)

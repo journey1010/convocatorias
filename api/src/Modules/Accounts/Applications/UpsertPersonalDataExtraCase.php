@@ -14,6 +14,7 @@ class UpsertPersonalDataExtraCase
     public function exec(StorePersonalDataExtraDto $dto): PersonalDataExtraResponseDto
     {
         $existingPersonalData = $this->repository->findByUserId($dto->user_id);
+        $this->fileService->user_id = $dto->user_id;
 
         if ($existingPersonalData) {
             return $this->updateExistingData($existingPersonalData, $dto);
@@ -25,6 +26,7 @@ class UpsertPersonalDataExtraCase
 
     private function createNewData(StorePersonalDataExtraDto $dto): PersonalDataExtraResponseDto
     {
+        
         return DB::transaction(function () use ($dto) {
             $data = [
                 'user_id' => $dto->user_id,
