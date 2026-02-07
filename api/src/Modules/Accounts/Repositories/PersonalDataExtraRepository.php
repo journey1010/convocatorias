@@ -33,4 +33,21 @@ class PersonalDataExtraRepository
 
         return $personalData;
     }
+
+    public function existsPathInColumn(int $userId, string $column, string $path): bool
+    {
+        $allowedColumns = [
+            'file_cert_disability',
+            'file_cert_army',
+            'file_cert_professional_credentials'
+        ];
+
+        if (!in_array($column, $allowedColumns)) {
+            return false;
+        }
+
+        return PersonalDataExtra::where('user_id', $userId)
+            ->where($column, $path)
+            ->exists();
+    }
 }

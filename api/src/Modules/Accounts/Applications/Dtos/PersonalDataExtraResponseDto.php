@@ -2,7 +2,7 @@
 
 namespace Modules\Accounts\Applications\Dtos;
 
-use Illuminate\Support\Facades\Storage;
+use Modules\Shared\Services\FileUrlHelper;
 
 class PersonalDataExtraResponseDto
 {
@@ -24,8 +24,7 @@ class PersonalDataExtraResponseDto
 
     public static function fromModel($model): self
     {
-        /** @var Cloud $disk */
-        $disk = Storage::disk('private');
+        $endpoint = '/api/accounts/personal-data/certificate';
 
         return new self(
             department_id: $model->department_id,
@@ -35,21 +34,11 @@ class PersonalDataExtraResponseDto
             birthday: $model->birthday->format('Y-m-d'),
             genere: $model->genere,
             have_cert_disability: $model->have_cert_disability,
-            
-            file_cert_disability: $model->file_cert_disability 
-                ? $disk->url($model->file_cert_disability) 
-                : null,
-            
+            file_cert_disability:FileUrlHelper::getFileUrl($endpoint, $model->file_cert_disability),       
             have_cert_army: $model->have_cert_army,
-            file_cert_army: $model->file_cert_army 
-                ? $disk->url($model->file_cert_army) 
-                : null,
-            
+            file_cert_army: FileUrlHelper::getFileUrl($endpoint, $model->file_cert_army),
             have_cert_professional_credentials: $model->have_cert_professional_credentials,
-            file_cert_professional_credentials: $model->file_cert_professional_credentials 
-                ? $disk->url($model->file_cert_professional_credentials) 
-                : null,
-            
+            file_cert_professional_credentials: FileUrlHelper::getFileUrl($endpoint, $model->file_cert_professional_credentials),   
             is_active_cert_professional_credentials: $model->is_active_cert_professional_credentials,
         );
     }
