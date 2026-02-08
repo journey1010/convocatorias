@@ -21,11 +21,11 @@ return new class extends Migration
             $table->date('birthday');
             $table->tinyInteger('genere');
             $table->boolean('have_cert_disability');
-            $table->string('file_cert_disability')->nullable();
+            $table->string('file_cert_disability', 400)->nullable();
             $table->boolean('have_cert_army');
-            $table->string('file_cert_army')->nullable();
+            $table->string('file_cert_army', 400)->nullable();
             $table->boolean('have_cert_professional_credentials');
-            $table->string('file_cert_professional_credentials')->nullable();
+            $table->string('file_cert_professional_credentials', 400)->nullable();
             $table->boolean('is_active_cert_professional_credentials');
             $table->timestamps();
         });

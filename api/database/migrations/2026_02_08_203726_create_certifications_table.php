@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('academic_records', function (Blueprint $table) {
+        Schema::create('certifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('specialization_area_id')->constrained('specialization_areas'); 
-            $table->tinyInteger('status');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->string('description')->nullable();
+            $table->string('name');
+            $table->year('year');
+            $table->tinyInteger('hours');
             $table->string('file', 400);
             $table->timestamps();
         });
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('academic_records');
+        Schema::dropIfExists('certifications');
     }
 };
