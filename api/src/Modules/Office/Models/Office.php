@@ -9,6 +9,7 @@ class Office extends Model {
 
     protected  $fillable = [
         'name', 
+        'locale_id',
         'status', 
         'level'
     ];

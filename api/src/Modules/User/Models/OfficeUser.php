@@ -38,7 +38,11 @@ class OfficeUser extends Model {
     public static function get(int $user_id): Collection
     {
         return DB::table('office_users as ou')
-            ->select('o.id', 'o.name')
+            ->select(
+                'o.id', 
+                'o.name', 
+                'o.locale_id'
+            )
             ->join('offices as o', 'o.id', '=', 'ou.office_id')
             ->where('ou.user_id', $user_id)
             ->orderBy('o.id')

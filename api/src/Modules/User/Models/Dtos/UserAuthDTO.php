@@ -34,6 +34,7 @@ class UserAuthDTO
         // Agregar oficinas solo si existen
         if (!empty($this->offices['ids'])) {
             $claims->addClaim('office_ids', implode(',', $this->offices['ids']));
+            $claims->addClaim('locale_ids', implode(',', $this->offices['locale_ids']));
         }
 
         return $claims;

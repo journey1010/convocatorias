@@ -19,7 +19,7 @@ class UserAuth extends VerifyCredentialQueryService {
     private const CACHE_TTL = 2678400;
     private const CACHE_PREFIX = 'user_auth_';
 
-public function verifyCredentials(string $nickname, string $password): UserAuthDTO
+    public function verifyCredentials(string $nickname, string $password): UserAuthDTO
     {
         $user = $this->searchByNickname($nickname);
 
@@ -102,6 +102,7 @@ public function verifyCredentials(string $nickname, string $password): UserAuthD
         $rows = OfficeUser::get($user_id);
         return [
             'ids' => $rows->pluck('id')->toArray(),
+            'locale_ids' => $rows->pluck('locale_id')->unique()->values()->toArray(),
             'names' => $rows->pluck('name')->toArray(),
         ];
     }

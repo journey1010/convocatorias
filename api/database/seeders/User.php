@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Office\Models\Office;
+use Modules\Office\Models\Locale;
 use Illuminate\Support\Facades\DB;
 use Modules\User\Models\OfficeUser;
 use Modules\User\Models\User as Users;
@@ -26,11 +27,16 @@ class User extends Seeder
                 'created_by' => null,
             ]);
             $user->givePermission('*');
+
+            $locale = Locale::create(['name' => 'sede-central']);
+
             $office = Office::create([
                 'name' => 'linux foundation',
+                'locale_id' => $locale->id,
                 'status' => 1,
                 'level' => 0
             ]);
+
             OfficeUser::create([
                 'office_id' => $office->id,
                 'user_id' => $user->id,
