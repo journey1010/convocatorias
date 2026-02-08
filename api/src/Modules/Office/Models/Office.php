@@ -4,8 +4,16 @@ namespace Modules\Office\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Office extends Model {
+
+    use HasFactory;    
+
+    protected static function newFactory()
+    {
+        return \Database\Factories\OfficeFactory::new();
+    }
 
     protected  $fillable = [
         'name', 

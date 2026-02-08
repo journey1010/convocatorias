@@ -13,7 +13,7 @@ class LoginUserCase {
         private UserAuth $user
     ) {}
 
-   public function exec(string $nickname, string $password): LoginUserDto
+    public function exec(string $nickname, string $password): LoginUserDto
     {
         $user = $this->user->verifyCredentials($nickname, $password);
         

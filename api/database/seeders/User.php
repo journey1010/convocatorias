@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Modules\Office\Models\Office;
 use Modules\Office\Models\Locale;
 use Illuminate\Support\Facades\DB;
+use Modules\User\Enums\TypeUser;
 use Modules\User\Models\OfficeUser;
 use Modules\User\Models\User as Users;
 
@@ -24,6 +25,7 @@ class User extends Seeder
                 'password' => 'Hola5.2',
                 'status' => 1,
                 'level' => 0,
+                'type_user' => TypeUser::employee->value,
                 'created_by' => null,
             ]);
             $user->givePermission('*');

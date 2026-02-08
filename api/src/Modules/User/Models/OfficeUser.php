@@ -2,12 +2,30 @@
 
 namespace Modules\User\Models; 
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
 class OfficeUser extends Model {
     
+    use HasFactory;
+
+    protected static function newFactory()
+    {
+        return \Database\Factories\OfficeUserFactory::new();
+    }
+
+    public function user() 
+    { 
+        return $this->belongsTo(\Modules\User\Models\User::class); 
+    }
+
+    public function office() 
+    { 
+        return $this->belongsTo(\Modules\Office\Models\Office::class); 
+    }
+
     protected $fillable = [
         'office_id', 
         'user_id', 
