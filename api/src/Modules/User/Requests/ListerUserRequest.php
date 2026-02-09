@@ -2,14 +2,15 @@
 
 namespace Modules\User\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 use Illuminate\Validation\Validator;
 
-class ListerUserRequest extends Template {
-    
+class ListerUserRequest extends Template
+{
+
     public function authorize(): bool
     {
-        return $this->verifyPermission($this->attributes->get('permissions'), 'user.list');
+        return $this->verifyPermission('user.list');
     }
 
     public function rules(): array
@@ -70,5 +71,4 @@ class ListerUserRequest extends Template {
             }
         ];
     }
-
 }

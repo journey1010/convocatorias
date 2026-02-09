@@ -10,15 +10,17 @@ use Modules\Office\Requests\{
     CreateOfficesRequest,
     UpdateOfficesRequest
 };
+use Modules\Auth\Infrastructure\Context\RequestContextResolver;
 
-class OfficeController extends Controller {
-    
+class OfficeController extends Controller
+{
+
     public function creater(CreateOfficesRequest $request)
     {
         Office::create([
             'name' => $request->input('name'),
             'status' => 1,
-            'level' => 1 
+            'level' => 1
 
         ]);
         return response()->json(['message' => 'Oficina creada correctamente'], 200);
@@ -26,11 +28,13 @@ class OfficeController extends Controller {
 
     public function lister(ListerOfficesRequest $request)
     {
+        $ctx = RequestContextResolver::fromRequest($request);
+
         $results = Office::lister(
-            $request->attributes->get('level'),
-            $request->input('itemsPerPage'), 
-            $request->input('page'), 
-            $request->input('name'), 
+            $ctx->level,
+            $request->input('itemsPerPage'),
+            $request->input('page'),
+            $request->input('name'),
         );
         return response()->json($results, 200);
     }
@@ -38,13 +42,13 @@ class OfficeController extends Controller {
     public function updater(UpdateOfficesRequest $request)
     {
         $office = Office::find($request->input('id'));
-        if(!$office){
+        if (!$office) {
             throw new JsonResponseException('ID not found', 404);
         }
         $office->name = $request->input('name');
         $office->status = $request->input('status');
         $office->save();
 
-        return response()->json(['message' => 'Registro actualizado'], 200);    
+        return response()->json(['message' => 'Registro actualizado'], 200);
     }
 }

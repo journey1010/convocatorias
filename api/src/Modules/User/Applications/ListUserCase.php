@@ -6,13 +6,17 @@ use Illuminate\Http\Request;
 use Modules\User\Models\Dtos\UserFiltersDTO;
 use Modules\Shared\Applications\Dtos\PaginateGenericDTO;
 use Modules\User\Models\User;
+use Modules\Auth\Infrastructure\Context\RequestContextResolver;
 
-class ListUserCase {
+class ListUserCase
+{
 
     public function exec(Request $request): PaginateGenericDTO
     {
+        $ctx = RequestContextResolver::fromRequest($request);
+
         $select = [
-            'id', 
+            'id',
             'full_name',
             'dni',
             'email',
@@ -23,9 +27,9 @@ class ListUserCase {
 
         $context = [
             'permissions' => $request->permission_users,
-            'sub' => $request->attributes->get('sub'),
-            'level' => $request->attributes->get('level'), 
-            'office_id' => $request->attributes->get('office_ids'), 
+            'sub' => $ctx->userId,
+            'level' => $ctx->level,
+            'office_id' => $ctx->officeIds,
         ];
 
         $result = User::paginate(new UserFiltersDTO(
@@ -40,7 +44,7 @@ class ListUserCase {
         ));
 
         return new PaginateGenericDTO(
-            $result->items(), 
+            $result->items(),
             $result->total()
         );
     }

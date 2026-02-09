@@ -2,9 +2,10 @@
 
 namespace Modules\Ubigeo\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 
-class DepartmentRequest extends Template{
+class DepartmentRequest extends Template
+{
 
     public function rules(): array
     {

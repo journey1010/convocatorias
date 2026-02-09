@@ -1,8 +1,9 @@
-<?php 
+<?php
 
 namespace Modules\Auth\Applications\Dtos;
 
-class LoginUserDto {
+class LoginUserDto
+{
     public function __construct(
         public string $name,
         public string $last_name,
@@ -10,7 +11,7 @@ class LoginUserDto {
         public string $email,
         public string $nickname,
         public array $permissions,
-        public string $office,
+        public array $office,
         public string $tokenAccess,
         public string $tokenRefresh
     ) {}

@@ -11,12 +11,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Modules\Auth\Services\Tokens\Enum\TokenType;
 use Illuminate\Support\Facades\RateLimiter;
+use Modules\Auth\Infrastructure\Context\RequestContextResolver;
 
 class TokenRateLimiter
 {
     public function handle(Request $request, Closure $next)
     {
-        $sub = $request->attributes->get('sub');
+        $refreshData = RequestContextResolver::getRefreshData($request);
+        $sub = $refreshData['userId'];
         $typeClient = $request->attributes->get('type_client');
 
         $hourKey = $this->makeKey($sub, $typeClient, 'hour');
@@ -30,10 +32,10 @@ class TokenRateLimiter
                 $this->removeToken($sub);
                 return response()->json(['message' => 'Token revoked due to too many requests per hour'], 429);
             }
-            if($typeClient === TokenType::INTERNAL->value){
+            if ($typeClient === TokenType::INTERNAL->value) {
                 User::where('id', $sub)->update(['status' => 2]);
             }
-            
+
             return response()->json(['message' => 'You’ve reached the maximum number of requests for hour.'], 429);
         }
 
@@ -58,7 +60,7 @@ class TokenRateLimiter
         Tokens::where('sub', $sub)->delete();
         Applications::where('sub', $sub)->update([
             'status' => 0,
-            'observacion' => 'Token revoked due to too many requests' 
+            'observacion' => 'Token revoked due to too many requests'
         ]);
         Cache::forget($key);
     }

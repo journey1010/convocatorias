@@ -2,7 +2,7 @@
 
 namespace Modules\Auth\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 
 class LoginRequest extends Template {
     public function rules(): array

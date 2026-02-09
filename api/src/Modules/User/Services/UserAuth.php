@@ -40,10 +40,8 @@ class UserAuth extends VerifyCredentialQueryService {
             level: $user->level
         );
 
-        // Agregar permisos siempre
         $builder->withPermissions($this->getUserPermissions($user->id));
 
-        // Agregar oficinas solo para empleados
         if ($user->type_user == TypeUser::employee->value) {
             $builder->withOffices($this->getOfficeUser($user->id));
         }

@@ -2,19 +2,20 @@
 
 namespace Modules\Rbac\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 
-class AssignPermissionRequest extends Template {
+class AssignPermissionRequest extends Template
+{
     public function authorize(): bool
     {
-        return $this->verifyPermission($this->attributes->get('permissions'), ['rbac.role']);
+        return $this->verifyPermission(['rbac.role']);
     }
 
     public function rules(): array
     {
         return [
             'id' => 'required|integer',
-            'permission' => 'required|array', 
+            'permission' => 'required|array',
             'permission.*' => 'integer|exists:permissions,id'
         ];
     }

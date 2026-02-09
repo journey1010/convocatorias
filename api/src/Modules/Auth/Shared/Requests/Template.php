@@ -1,17 +1,13 @@
 <?php
 
-namespace Modules\Shared\Requests;
+namespace Modules\Auth\Shared\Requests;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
-use Modules\Rbac\Services\AccessControlServices;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 
-class Template extends FormRequest
+class Template extends BaseFormRequest
 {
-    use AccessControlServices;
-
     public function authorize(): bool
     {
         return true;

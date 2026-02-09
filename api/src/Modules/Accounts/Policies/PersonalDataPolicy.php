@@ -2,18 +2,20 @@
 
 namespace Modules\Accounts\Policies;
 
-use Modules\User\Services\UserAuthMeta;
+use Modules\Auth\Infrastructure\Context\RequestContext;
+use Modules\Auth\Services\PermissionChecker;
 
-class PersonalDataPolicy {
+class PersonalDataPolicy
+{
+    public function __construct(private PermissionChecker $permissionChecker) {}
 
-    public function viewCertificate(UserAuthMeta $user, int $ownerFile): bool
+    public function viewCertificate(RequestContext $context, int $ownerFile): bool
     {
-        if($user->hasPermission('cv.evaluation')){
+        if ($this->permissionChecker->hasPermissionByName($context, 'cv.evaluation')) {
             return true;
         }
 
-
-        if($ownerFile == $user->user_id){
+        if ($ownerFile == $context->userId) {
             return true;
         }
 

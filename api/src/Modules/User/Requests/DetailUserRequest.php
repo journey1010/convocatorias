@@ -2,19 +2,19 @@
 
 namespace Modules\User\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 
-class DetailUserRequest extends Template {
-    
-    public function verifyPermission(string $stringPermission, string|array $permission, bool $strict = false): bool
+class DetailUserRequest extends Template
+{
+    public function authorize(): bool
     {
-        return $this->verifyPermission($this->attributes->get('permissions'), 'user.list');
+        return true;
     }
 
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:users,id' 
+            'id' => 'required|integer|exists:users,id'
         ];
     }
 }

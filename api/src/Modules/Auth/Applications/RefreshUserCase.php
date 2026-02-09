@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Modules\Auth\Applications;
 
@@ -7,7 +7,7 @@ use Modules\Auth\Applications\Dtos\LoginUserDto;
 use Modules\Auth\Services\Tokens\JwtManager;
 use Modules\User\Services\UserAuth;
 
-class RefreshUserCase 
+class RefreshUserCase
 {
     private const REFRESH_THRESHOLD = 8000000;
 
@@ -19,17 +19,14 @@ class RefreshUserCase
     public function exec(int $user_id, ?int $exp, ?string $token): LoginUserDto
     {
         $user = $this->user->refreshUser($user_id);
-        
-        // ⭐ Generar claims automáticamente desde el DTO
+
         $claims = $user->toClaims();
-        
-        // ⭐ Generar access token con TODOS los claims automáticamente
+
         $accessToken = $this->jwt->generateAccessToken(
             $user->id,
-            $claims->toArray() // Pasar todos los claims dinámicamente
+            $claims->toArray()
         );
-        
-        // Determinar si necesitamos generar un nuevo refresh token
+
         $refreshToken = ($exp !== null && ($exp - time()) < self::REFRESH_THRESHOLD)
             ? $this->jwt->generateRefreshToken($user->id)
             : $token ?? throw new JsonResponseException('Unauthorized, token not provided', 401);
@@ -41,7 +38,7 @@ class RefreshUserCase
             $user->email,
             $user->nickname,
             $user->getPermissionNames(),
-            $user->getOfficeNames(),
+            $user->offices['names'] ?? [],
             $accessToken,
             $refreshToken,
         );

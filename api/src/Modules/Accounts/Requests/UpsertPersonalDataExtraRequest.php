@@ -2,13 +2,13 @@
 
 namespace Modules\Accounts\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 
 class UpsertPersonalDataExtraRequest extends Template
 {
     public function authorize(): bool
     {
-        return $this->verifyPermission($this->attributes->get('permissions'), ['p.postulante']);
+        return $this->verifyPermission(['p.postulante']);
     }
 
     public function rules(): array

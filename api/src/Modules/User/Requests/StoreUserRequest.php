@@ -2,14 +2,15 @@
 
 namespace Modules\User\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 use Illuminate\Validation\Rules\Password;
 
-class StoreUserRequest extends Template {
-    
+class StoreUserRequest extends Template
+{
+
     public function authorize(): bool
     {
-        return $this->verifyPermission($this->attributes->get('permissions'), 'user.create');
+        return $this->verifyPermission('user.create');
     }
 
     public function rules(): array
@@ -29,13 +30,13 @@ class StoreUserRequest extends Template {
             'permissions.*' => 'integer|exists:permissions,id',
         ];
     }
-    
+
     public function messages()
     {
         return [
             'dni.unique' => 'Este número de DNI ya se encuentra en uso.',
             'nickname.unique' => 'Este nickname ya esta en uso.',
-            'email.unique' => 'Este correo ya se encuentra en uso', 
+            'email.unique' => 'Este correo ya se encuentra en uso',
             'role.in' => 'Rol no disponible para el registro.',
             'role.required' => 'Rol requerido.',
             'role.string' => 'Rol debe ser un string.',

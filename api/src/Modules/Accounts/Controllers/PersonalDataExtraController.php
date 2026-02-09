@@ -11,50 +11,31 @@ use Modules\Accounts\Applications\{
 use Modules\Accounts\Repositories\PersonalDataExtraRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Infrastructure\Exceptions\JsonResponseException;
-use Modules\User\Services\UserAuthMeta;
+use Modules\Auth\Infrastructure\Context\RequestContextResolver;
 
 class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
 {
-    public function upsert(UpsertPersonalDataExtraRequest $request, UpsertPersonalDataExtraCase $case): JsonResponse 
+    public function upsert(UpsertPersonalDataExtraRequest $request, UpsertPersonalDataExtraCase $case): JsonResponse
     {
-        $authenticatedUserId = $this->getAuthenticatedUserId($request);
+        $ctx = RequestContextResolver::fromRequest($request);
 
-        $dto = $this->mapRequestToUpsertDto($request, $authenticatedUserId);
-        $result = $case->exec($dto, $authenticatedUserId);
+        $dto = $this->mapRequestToUpsertDto($request, $ctx->userId);
+        $result = $case->exec($dto, $ctx->userId);
 
         return response()->json($result, 201);
     }
 
-    public function show(Request $request, PersonalDataExtraRepository $repository): JsonResponse 
+    public function show(Request $request, PersonalDataExtraRepository $repository): JsonResponse
     {
-        $authenticatedUserId = $this->getAuthenticatedUserId($request);
-        $personalData = $repository->findByUserId($authenticatedUserId);
+        $ctx = RequestContextResolver::fromRequest($request);
+        $personalData = $repository->findByUserId($ctx->userId);
         return response()->json($personalData);
     }
 
-    public function downloadCertificate(Request $request, string $certificateType, GetCertificateFileCase $case): BinaryFileResponse 
-    {        
-        $authenticatedUserId = $this->getAuthenticatedUserId($request);
-        return $case->exec(
-            $certificateType, 
-            new UserAuthMeta(
-                $authenticatedUserId, 
-                $request->attributes->get('permissions'),
-                $request->attributes->get('office_ids'),
-                $request->attributes->get('locales'), 
-            ));
-    }
-
-    private function getAuthenticatedUserId(Request $request): int
+    public function downloadCertificate(Request $request, string $certificateType, GetCertificateFileCase $case): BinaryFileResponse
     {
-        $userId = $request->attributes->get('sub');
-
-        if (!$userId) {
-            throw new JsonResponseException('Usuario no autenticado', 401);
-        }
-
-        return $userId;
+        $context = RequestContextResolver::fromRequest($request);
+        return $case->exec($certificateType, $context);
     }
 
     private function mapRequestToUpsertDto(UpsertPersonalDataExtraRequest $request, int $userId)

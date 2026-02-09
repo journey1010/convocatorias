@@ -126,7 +126,10 @@ class PersonalDataExtraTest extends TestCase
         // Verificar que el archivo se guardó físicamente en el disco fake
         // Nota: Aquí debes poner la ruta que tu Service genera (ej: personal_data_certs/...)
         $personalData = \Modules\Accounts\Models\PersonalDataExtra::where('user_id', $credentials['user']->id)->first();
-        //Storage::disk('private')->assertExists($personalData->file_cert_army);
+        
+        /** @var Cloud $storage */
+        $storage  = Storage::disk('private');
+        $storage->assertExists($personalData->file_cert_army);
     }
 
     public function test_personal_data_extra_requires_authentication(): void

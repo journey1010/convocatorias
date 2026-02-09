@@ -2,21 +2,22 @@
 
 namespace Modules\Office\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 
-class CreateOfficesRequest extends Template {
+class CreateOfficesRequest extends Template
+{
     public function authorize(): bool
     {
-        return $this->verifyPermission($this->attributes->get('permissions'), 'offices.manage');
+        return $this->verifyPermission('offices.manage');
     }
 
     public function rules(): array
     {
         return [
             'name' => [
-                'required',  
-                'string',  
-                'max:255', 
+                'required',
+                'string',
+                'max:255',
                 'unique:offices,name'
             ],
         ];

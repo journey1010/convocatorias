@@ -2,18 +2,19 @@
 
 namespace Modules\Rbac\Requests;
 
-use Modules\Shared\Requests\Template;
+use Modules\Auth\Shared\Requests\Template;
 
-class CreateRoleRequest extends Template {
+class CreateRoleRequest extends Template
+{
     public function authorize(): bool
     {
-        return $this->verifyPermission($this->attributes->get('permissions'), ['rbac.role']);
+        return $this->verifyPermission(['rbac.role']);
     }
 
     public function rules(): array
     {
         return [
-            'name' => 'required|string|unique:roles,name', 
+            'name' => 'required|string|unique:roles,name',
             'display_name' => 'required|string|max:255',
             'description' => 'required|string|max:255'
         ];
