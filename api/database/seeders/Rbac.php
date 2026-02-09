@@ -15,7 +15,8 @@ class Rbac extends Seeder
     {
         // 1. Permisos Globales
         $this->addPermission('*', 'wildcard', 'Permission for all actions (exclusively for sysadmin)');
-
+        $this->addPermission('offices.manage', 'Oficinas y Locales', 'Administrar Oficinas y locales'); 
+        $this->addPermission('rbac.role', 'Roles y Permisos', 'Administrar Roles y Permisos');
         // 2. Módulos Específicos
         $this->seedPostulantes();
         $this->seedUsers();

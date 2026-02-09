@@ -4,7 +4,7 @@ namespace Modules\Office\Requests;
 
 use Modules\Auth\Shared\Requests\Template;
 
-class CreateOfficesRequest extends Template
+class UpdateLocalesRequest extends Template
 {
     public function authorize(): bool
     {
@@ -14,16 +14,12 @@ class CreateOfficesRequest extends Template
     public function rules(): array
     {
         return [
+            'id' => 'required|integer|exists:locales,id',
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                'unique:offices,name'
-            ],
-            'locale_id' => [
-                'required',
-                'integer',
-                'exists:locales,id'
+                'unique:locales,name,' . $this->input('id')
             ],
         ];
     }
@@ -31,13 +27,13 @@ class CreateOfficesRequest extends Template
     public function messages(): array
     {
         return [
+            'id.required' => 'El id es requerido',
+            'id.integer' => 'El id debe ser un número entero',
+            'id.exists' => 'El local no existe',
             'name.required' => 'Nombre es requerido',
             'name.string' => 'Nombre debe ser texto',
             'name.max' => 'Nombre debe tener máximo 255 caracteres',
-            'name.unique' => 'Nombre ya existe',
-            'locale_id.required' => 'Local es requerido',
-            'locale_id.integer' => 'Local debe ser un número entero',
-            'locale_id.exists' => 'El local no existe'
+            'name.unique' => 'Nombre ya existe'
         ];
     }
 }

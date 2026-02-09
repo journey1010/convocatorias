@@ -19,6 +19,7 @@ class OfficeController extends Controller
     {
         Office::create([
             'name' => $request->input('name'),
+            'locale_id' => $request->input('locale_id'),
             'status' => 1,
             'level' => 1
 
@@ -47,6 +48,7 @@ class OfficeController extends Controller
         }
         $office->name = $request->input('name');
         $office->status = $request->input('status');
+        $office->locale_id = $request->input('locale_id');
         $office->save();
 
         return response()->json(['message' => 'Registro actualizado'], 200);

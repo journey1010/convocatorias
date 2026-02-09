@@ -4,7 +4,7 @@ namespace Modules\Office\Requests;
 
 use Modules\Auth\Shared\Requests\Template;
 
-class CreateOfficesRequest extends Template
+class CreateLocalesRequest extends Template
 {
     public function authorize(): bool
     {
@@ -18,12 +18,7 @@ class CreateOfficesRequest extends Template
                 'required',
                 'string',
                 'max:255',
-                'unique:offices,name'
-            ],
-            'locale_id' => [
-                'required',
-                'integer',
-                'exists:locales,id'
+                'unique:locales,name'
             ],
         ];
     }
@@ -34,10 +29,7 @@ class CreateOfficesRequest extends Template
             'name.required' => 'Nombre es requerido',
             'name.string' => 'Nombre debe ser texto',
             'name.max' => 'Nombre debe tener máximo 255 caracteres',
-            'name.unique' => 'Nombre ya existe',
-            'locale_id.required' => 'Local es requerido',
-            'locale_id.integer' => 'Local debe ser un número entero',
-            'locale_id.exists' => 'El local no existe'
+            'name.unique' => 'Nombre ya existe'
         ];
     }
 }

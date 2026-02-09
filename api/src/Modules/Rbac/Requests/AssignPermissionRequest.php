@@ -8,7 +8,7 @@ class AssignPermissionRequest extends Template
 {
     public function authorize(): bool
     {
-        return $this->verifyPermission(['rbac.role']);
+        return $this->verifyPermission('rbac.role');
     }
 
     public function rules(): array
