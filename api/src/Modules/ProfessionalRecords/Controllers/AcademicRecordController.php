@@ -62,9 +62,10 @@ class AcademicRecordController extends \Modules\Shared\Controllers\Controller
         return response()->json($result);
     }
 
-    public function delete(DeleteAcademicRecordRequest $request, DeleteAcademicRecordCase $case, int $id): JsonResponse
+    public function delete(DeleteAcademicRecordRequest $request, DeleteAcademicRecordCase $case): JsonResponse
     {
-        $case->exec($id);
+        $ctx = RequestContextResolver::fromRequest($request);
+        $case->exec($request->input('id'), $ctx->userId);
 
         return response()->json(['message' => 'Registro académico eliminado exitosamente']);
     }
@@ -77,7 +78,7 @@ class AcademicRecordController extends \Modules\Shared\Controllers\Controller
         return response()->json($result);
     }
 
-    public function downloadFile(Request $request, string $filePath, GetProfessionalFileCase $case): BinaryFileResponse
+    public function GetFile(Request $request, string $filePath, GetProfessionalFileCase $case): BinaryFileResponse
     {
         $ctx = RequestContextResolver::fromRequest($request);
         return $case->exec($filePath, $ctx);

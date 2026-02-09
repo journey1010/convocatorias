@@ -14,7 +14,7 @@ class AssignPermissionRequest extends Template
     public function rules(): array
     {
         return [
-            'id' => 'required|integer',
+            'id' => 'required|integer|exists:roles,id',
             'permission' => 'required|array',
             'permission.*' => 'integer|exists:permissions,id'
         ];

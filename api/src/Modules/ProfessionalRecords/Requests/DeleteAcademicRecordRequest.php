@@ -14,7 +14,7 @@ class DeleteAcademicRecordRequest extends Template
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:academic_records,id',
+            'id' => 'required|integer',
         ];
     }
 
@@ -22,7 +22,6 @@ class DeleteAcademicRecordRequest extends Template
     {
         return [
             'id.required' => 'El ID del registro es requerido',
-            'id.exists' => 'El registro académico no existe',
         ];
     }
 }
