@@ -42,11 +42,12 @@ class AcademicRecordController extends \Modules\Shared\Controllers\Controller
         return response()->json($result, 201);
     }
 
-    public function update(UpdateAcademicRecordRequest $request, UpdateAcademicRecordCase $case, int $id): JsonResponse
+    public function update(UpdateAcademicRecordRequest $request, UpdateAcademicRecordCase $case): JsonResponse
     {
         $ctx = RequestContextResolver::fromRequest($request);
 
         $dto = new UpdateAcademicRecordDto(
+            id: $request->input('id'),
             specialization_area_id: $request->input('specialization_area_id'),
             level: $request->input('level'),
             status: $request->input('status'),
@@ -56,7 +57,7 @@ class AcademicRecordController extends \Modules\Shared\Controllers\Controller
             file: $request->file('file'),
         );
 
-        $result = $case->exec($id, $ctx->userId, $dto);
+        $result = $case->exec($ctx->userId, $dto);
 
         return response()->json($result);
     }

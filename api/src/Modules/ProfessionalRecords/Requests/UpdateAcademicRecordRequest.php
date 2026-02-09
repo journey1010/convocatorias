@@ -2,8 +2,9 @@
 
 namespace Modules\ProfessionalRecords\Requests;
 
+use Illuminate\Validation\Rule;
 use Modules\Auth\Shared\Requests\Template;
-use Modules\ProfessionalRecords\Models\AcademicRecord;
+use Modules\ProfessionalRecords\Enums\{AcademicLevel, AcademicStatus};
 
 class UpdateAcademicRecordRequest extends Template
 {
@@ -15,22 +16,12 @@ class UpdateAcademicRecordRequest extends Template
     public function rules(): array
     {
         return [
+            'id' => 'required|integer',
             'specialization_area_id' => 'required|integer|exists:specialization_areas,id',
-            'level' => 'required|integer|in:' . implode(',', [
-                AcademicRecord::LEVEL_PRIMARY,
-                AcademicRecord::LEVEL_SECONDARY,
-                AcademicRecord::LEVEL_TECHNICAL,
-                AcademicRecord::LEVEL_UNIVERSITY,
-                AcademicRecord::LEVEL_MASTER,
-                AcademicRecord::LEVEL_DOCTORATE,
-            ]),
-            'status' => 'required|integer|in:' . implode(',', [
-                AcademicRecord::STATUS_COMPLETED,
-                AcademicRecord::STATUS_IN_PROGRESS,
-                AcademicRecord::STATUS_INCOMPLETE,
-            ]),
-            'start_date' => 'required|date|before_or_equal:today',
-            'end_date' => 'nullable|date|after:start_date',
+            'level' => ['required', 'integer', Rule::enum(AcademicLevel::class)],
+            'status' => ['required', 'integer', Rule::enum(AcademicStatus::class)],
+            'start_date' => 'required|date|before_or_equal:today|date_format:Y-m-d',
+            'end_date' => 'nullable|date|after:start_date|date_format:Y-m-d',
             'description' => 'nullable|string|max:255',
             'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
         ];
@@ -42,9 +33,9 @@ class UpdateAcademicRecordRequest extends Template
             'specialization_area_id.required' => 'El área de especialización es requerida',
             'specialization_area_id.exists' => 'El área de especialización seleccionada no existe',
             'level.required' => 'El nivel académico es requerido',
-            'level.in' => 'El nivel académico no es válido',
+            'level.enum' => 'El nivel académico no es válido',
             'status.required' => 'El estado es requerido',
-            'status.in' => 'El estado no es válido',
+            'status.enum' => 'El estado no es válido',
             'start_date.required' => 'La fecha de inicio es requerida',
             'start_date.date' => 'La fecha de inicio debe ser una fecha válida',
             'start_date.before_or_equal' => 'La fecha de inicio no puede ser futura',

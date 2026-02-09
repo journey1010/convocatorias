@@ -3,6 +3,7 @@
 namespace Modules\ProfessionalRecords\Applications;
 
 use Illuminate\Support\Facades\DB;
+use Infrastructure\Exceptions\JsonResponseException;
 use Modules\ProfessionalRecords\Applications\Dtos\{UpdateAcademicRecordDto, AcademicRecordResponseDto};
 use Modules\ProfessionalRecords\Repositories\AcademicRecordRepository;
 use Modules\ProfessionalRecords\Services\ProfessionalFileStorageService;
@@ -14,10 +15,14 @@ class UpdateAcademicRecordCase
         private ProfessionalFileStorageService $fileService
     ) {}
 
-    public function exec(int $recordId, int $userId, UpdateAcademicRecordDto $dto): AcademicRecordResponseDto
+    public function exec(int $userId, UpdateAcademicRecordDto $dto): AcademicRecordResponseDto
     {
-        return DB::transaction(function () use ($recordId, $userId, $dto) {
-            $record = $this->repository->findByIdOrFail($recordId);
+        return DB::transaction(function () use ($userId, $dto) {
+            $record = $this->repository->findByIdOrFail($dto->id);
+            
+            if($record->user_id !== $userId){
+                throw new JsonResponseException('Unauthorized', 401);
+            }
 
             $this->fileService->user_id = (string) $userId;
 

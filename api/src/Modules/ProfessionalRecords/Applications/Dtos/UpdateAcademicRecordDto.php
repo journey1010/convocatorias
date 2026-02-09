@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 class UpdateAcademicRecordDto
 {
     public function __construct(
+        public readonly int $id,
         public readonly int $specialization_area_id,
         public readonly int $level,
         public readonly int $status,

@@ -78,7 +78,7 @@ Route::prefix('professional-records')->middleware('jwt:internal')->group(functio
     Route::prefix('academic-records')->group(function () {
         Route::get('/', [AcademicRecordController::class, 'list']);
         Route::post('/', [AcademicRecordController::class, 'create']);
-        Route::post('/{id}', [AcademicRecordController::class, 'update']);
+        Route::post('update/', [AcademicRecordController::class, 'update']);
         Route::delete('/{id}', [AcademicRecordController::class, 'delete']);
     });
 
