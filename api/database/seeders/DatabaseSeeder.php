@@ -6,15 +6,17 @@ use Infrastructure\SeederTracker;
 use Database\Seeders\{
     Rbac,
     Ubigeo,
-    User
+    User,
+    SpecializationAreasSeeder
 };
 
 class DatabaseSeeder extends SeederTracker
-{   
+{
     public function run(): void
     {
         $this->callIfNotExecuted(Ubigeo::class);
         $this->callIfNotExecuted(Rbac::class);
         $this->callIfNotExecuted(User::class);
+        $this->callIfNotExecuted(SpecializationAreasSeeder::class);
     }
 }

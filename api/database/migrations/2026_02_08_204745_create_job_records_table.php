@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('entity_name');
-            $table->string('type');
+            $table->tinyInteger('type');
             $table->string('specialization_area');
             $table->tinyInteger('status');
             $table->tinyText('description')->nullable();

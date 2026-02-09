@@ -19,7 +19,7 @@ class OfficeTest extends TestCase
     {
         parent::setUp();
 
-        $userData = UserHelper::create([], [], ['offices.manage']);
+        $userData = UserHelper::create([], [], ['office.manage']);
         $response = $this->postJson('/api/auth/login', [
             'nickname' => $userData['nickname'],
             'password' => $userData['password'],

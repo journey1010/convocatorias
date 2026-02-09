@@ -6,37 +6,39 @@ use Modules\User\Requests\{
     StoreUserRequest, 
     ListerUserRequest,
     UpdaterRequest, 
-    DetailUserRequest
+    ChangePasswordRequest
 };
 
 use Modules\User\Applications\{
     UpdateUserCase,
     StoreUserCase ,
-    ListUserCase
+    ListUserCase,
+    ChangePasswordCase
 };
 
 class UserController
 {
-    public function register(StoreUserRequest $request, StoreUserCase $user)
+    public function register(StoreUserRequest $request, StoreUserCase $case)
     {
-        $user->exec($request);
+        $case->exec($request);
         return response()->json(['message' => 'Usuario creado']);
     }
     
-    public function Lister(ListerUserRequest $request, ListUserCase $user)
+    public function list(ListerUserRequest $request, ListUserCase $case)
     { 
-        $results = $user->exec($request);
+        $results = $case->exec($request);
         return response()->json($results);
     }
 
-    public function lister()
+    public function update(UpdaterRequest $request, UpdateUserCase $case)
     {
-    
+        $case->exec($request);
+        return response()->json(['message' => 'Datos actualizados']);
     }
 
-    public function updater(UpdaterRequest $request, UpdateUserCase $user)
+    public function changePassword(ChangePasswordRequest $request, ChangePasswordCase $case)
     {
-        $user->exec($request);
-        return response()->json(['message' => 'Datos actualizados']);
+        $case->exec($request);
+        return response()->json(['message' => 'Contraseña actualizada']);
     }
 }

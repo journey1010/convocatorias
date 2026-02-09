@@ -15,8 +15,10 @@ class Rbac extends Seeder
     {
         // 1. Permisos Globales
         $this->addPermission('*', 'wildcard', 'Permission for all actions (exclusively for sysadmin)');
-        $this->addPermission('offices.manage', 'Oficinas y Locales', 'Administrar Oficinas y locales'); 
+        $this->addPermission('office.manage', 'Oficinas y Locales', 'Administrar Oficinas y locales');
         $this->addPermission('rbac.role', 'Roles y Permisos', 'Administrar Roles y Permisos');
+        $this->addPermission('specialization_areas.manage', 'Áreas de Especialización', 'Administrar áreas de especialización');
+        $this->addPermission('cv.evaluation', 'Evaluación CV', 'Evaluar currículums y ver documentos de postulantes');
         // 2. Módulos Específicos
         $this->seedPostulantes();
         $this->seedUsers();
@@ -26,15 +28,15 @@ class Rbac extends Seeder
     protected function seedPostulantes(): void
     {
         $permiso = $this->addPermission(
-            'p.postulante', 
-            'Aplicante', 
+            'p.postulante',
+            'Aplicante',
             'Permisos para aplicar a una convocatoria'
         );
 
         $this->addRole(
-            'p.postulante', 
-            'Role Aplicante', 
-            'Usuario con permisos para aplicar a una convocatoria', 
+            'p.postulante',
+            'Role Aplicante',
+            'Usuario con permisos para aplicar a una convocatoria',
             [$permiso->id]
         );
     }
@@ -43,7 +45,7 @@ class Rbac extends Seeder
     {
         $this->addPermission('user.list',   'Usuario Listar', 'Permite listar usuarios');
         $this->addPermission('user.create', 'Usuario Crear',  'Crear usuarios');
-        $this->addPermission('users.edit',  'Usuario Editar', 'Permite editar usuarios');
+        $this->addPermission('user.edit',  'Usuario Editar', 'Permite editar usuarios');
     }
 
     protected function seedRbac(): void

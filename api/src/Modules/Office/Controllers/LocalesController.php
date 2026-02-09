@@ -2,8 +2,8 @@
 
 namespace Modules\Office\Controllers;
 
-use Modules\Shared\Controllers\Controller;
 use Modules\Office\Models\Locale;
+use Modules\Shared\Controllers\Controller;
 use Modules\Office\Requests\CreateLocalesRequest;
 use Modules\Office\Requests\UpdateLocalesRequest;
 
@@ -11,11 +11,11 @@ class LocalesController extends Controller
 {
     public function creater(CreateLocalesRequest $request)
     {
-        Locale::create([
+        $locale = Locale::create([
             'name' => $request->input('name'),
         ]);
 
-        return response()->json(['message' => 'Local creado correctamente'], 201);
+        return response()->json($locale, 201);
     }
 
     public function updater(UpdateLocalesRequest $request)
@@ -24,7 +24,7 @@ class LocalesController extends Controller
         $locale->name = $request->input('name');
         $locale->save();
 
-        return response()->json(['message' => 'Local actualizado correctamente'], 200);
+        return response()->json($locale, 200);
     }
 
     public function lister()

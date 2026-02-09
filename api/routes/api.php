@@ -6,6 +6,13 @@ use Modules\User\Controllers\UserController;
 use Modules\Rbac\Controllers\RbacController;
 use Modules\Ubigeo\Controllers\UbigeoController;
 use Modules\Office\Controllers\OfficeController;
+use Modules\Office\Controllers\LocalesController;
+use Modules\ProfessionalRecords\Controllers\{
+    SpecializationAreaController,
+    AcademicRecordController,
+    CertificationController,
+    JobRecordController
+};
 use Modules\Accounts\Controllers\{TokenController, AccountController, PersonalDataExtraController};
 
 Route::prefix('/auth/')->group(function () {
@@ -14,30 +21,31 @@ Route::prefix('/auth/')->group(function () {
     Route::patch('password', [AuthController::class, 'changePassword'])->middleware('jwt:internal');
 });
 
-Route::prefix('/office/')->group(function () {
-    Route::post('create', [OfficeController::class, 'creater'])->middleware('jwt:internal');
-    Route::get('list', [OfficeController::class, 'lister'])->middleware('jwt:internal');
-    Route::patch('update', [OfficeController::class, 'updater'])->middleware('jwt:internal');
-    Route::delete('remove', [OfficeController::class, 'deleter'])->middleware('jwt:internal');
+Route::prefix('/office/')->middleware('jwt:internal')->group(function () {
+    Route::post('create', [OfficeController::class, 'creater']);
+    Route::get('list', [OfficeController::class, 'lister']);
+    Route::patch('update', [OfficeController::class, 'updater']);
+    Route::delete('remove', [OfficeController::class, 'deleter']);
 
     Route::prefix('locale')->group(function () {
-        Route::post('/', [\Modules\Office\Controllers\LocalesController::class, 'creater'])->middleware('jwt:internal');
-        Route::patch('/', [\Modules\Office\Controllers\LocalesController::class, 'updater'])->middleware('jwt:internal');
-        Route::get('/', [\Modules\Office\Controllers\LocalesController::class, 'lister'])->middleware('jwt:internal');
+        Route::post('/', [LocalesController::class, 'creater']);
+        Route::patch('/', [LocalesController::class, 'updater']);
+        Route::get('/', [LocalesController::class, 'lister']);
     });
-});
+}); 
 
-Route::prefix('rbac')->group(function () {
-    Route::get('role/list', [RbacController::class, 'listerRole'])->middleware('jwt:internal');
-    Route::post('role/create', [RbacController::class, 'createRole'])->middleware('jwt:internal');
-    Route::post('role/assign', [RbacController::class, 'syncPermissionRole'])->middleware('jwt:internal');
-    Route::get('permission/list', [RbacController::class, 'listerPermission'])->middleware('jwt:internal');
+Route::prefix('rbac')->middleware('jwt:internal')->group(function () {
+    Route::get('role/list', [RbacController::class, 'listerRole']);
+    Route::post('role/create', [RbacController::class, 'createRole']);
+    Route::post('role/assign', [RbacController::class, 'syncPermissionRole']);
+    Route::get('permission/list', [RbacController::class, 'listerPermission']);
 });
 
 Route::prefix('/user/')->group(function () {
     Route::post('register', [UserController::class, 'register'])->middleware('jwt:internal');
-    Route::get('list', [UserController::class, 'Lister'])->middleware('jwt:internal');
-    Route::patch('update', [UserController::class, 'updater'])->middleware('jwt:internal');
+    Route::get('list', [UserController::class, 'list'])->middleware('jwt:internal');
+    Route::patch('update', [UserController::class, 'update'])->middleware('jwt:internal');
+    Route::post('change-password', [UserController::class, 'changePassword'])->middleware('jwt:internal');
 });
 
 Route::prefix('ubigeo')->group(function () {
@@ -53,9 +61,42 @@ Route::prefix('accounts')->group(function () {
     Route::prefix('personal-data')->middleware('jwt:internal')->group(function () {
         Route::post('/', [PersonalDataExtraController::class, 'upsert']);
         Route::get('/', [PersonalDataExtraController::class, 'show']);
-        Route::get(
-            'certificate/{certificateType}',
-            [PersonalDataExtraController::class, 'downloadCertificate']
-        )->where('certificateType', '.*');
+        Route::get('certificate/{certificateType}',[PersonalDataExtraController::class, 'downloadCertificate'])->where('certificateType', '.*');
     });
+});
+
+Route::prefix('professional-records')->middleware('jwt:internal')->group(function () {
+    Route::prefix('specialization-areas')->group(function () {
+Route::get('/', [SpecializationAreaController::class, 'list'])
+            ->withoutMiddleware('jwt:internal');
+        Route::post('/', [SpecializationAreaController::class, 'create']);
+        Route::patch('/', [SpecializationAreaController::class, 'update']);
+    });
+
+    // Academic Records
+    Route::prefix('academic-records')->group(function () {
+        Route::get('/', [AcademicRecordController::class, 'list']);
+        Route::post('/', [AcademicRecordController::class, 'create']);
+        Route::post('/{id}', [AcademicRecordController::class, 'update']);
+        Route::delete('/{id}', [AcademicRecordController::class, 'delete']);
+    });
+
+    // Certifications
+    Route::prefix('certifications')->group(function () {
+        Route::get('/', [CertificationController::class, 'list']);
+        Route::post('/', [CertificationController::class, 'create']);
+        Route::post('/{id}', [CertificationController::class, 'update']);
+        Route::delete('/{id}', [CertificationController::class, 'delete']);
+    });
+
+    // Job Records
+    Route::prefix('job-records')->group(function () {
+        Route::get('/', [JobRecordController::class, 'list']);
+        Route::post('/', [JobRecordController::class, 'create']);
+        Route::post('/{id}', [JobRecordController::class, 'update']);
+        Route::delete('/{id}', [JobRecordController::class, 'delete']);
+    });
+
+    // File Downloads (shared endpoint for all professional record files)
+    Route::get('files/{filePath}', [AcademicRecordController::class, 'downloadFile'])->where('filePath', '.*');
 });

@@ -8,7 +8,7 @@ class ListerOfficesRequest extends Template
 {
     public function authorize(): bool
     {
-        return $this->verifyPermission('offices.manage');
+        return $this->verifyPermission('office.manage');
     }
 
 

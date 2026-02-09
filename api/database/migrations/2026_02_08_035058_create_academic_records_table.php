@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('academic_records', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('specialization_area_id')->constrained('specialization_areas'); 
+            $table->foreignId('specialization_area_id')->constrained('specialization_areas');
+            $table->tinyInteger('level');
             $table->tinyInteger('status');
             $table->date('start_date');
             $table->date('end_date')->nullable();
