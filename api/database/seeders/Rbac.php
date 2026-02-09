@@ -22,12 +22,6 @@ class Rbac extends Seeder
         $this->seedRbac();
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Lógica de Módulos (Seeds)
-    |--------------------------------------------------------------------------
-    */
-
     protected function seedPostulantes(): void
     {
         $permiso = $this->addPermission(
@@ -56,11 +50,6 @@ class Rbac extends Seeder
         $this->addPermission('rbac.role', 'Administrar Roles', 'Administrar roles');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Métodos Auxiliares (Helpers)
-    |--------------------------------------------------------------------------
-    */
 
     private function addPermission(string $name, string $display, string $description): Permission
     {

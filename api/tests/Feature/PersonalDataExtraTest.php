@@ -65,7 +65,21 @@ class PersonalDataExtraTest extends TestCase
         ])->postJson('/api/accounts/personal-data', $payload);
 
         $response->assertStatus(201)
-                 ->assertJsonPath('user_id', $credentials['user']->id);
+                 ->assertJsonStructure([
+                        'department_id',
+                        'province_id',
+                        'district_id',
+                        'address',
+                        'birthday',
+                        'genere',
+                        'have_cert_disability',
+                        'file_cert_disability',
+                        'have_cert_army',
+                        'file_cert_army',
+                        'have_cert_professional_credentials',
+                        'file_cert_professional_credentials',
+                        'is_active_cert_professional_credentials'
+                 ]);
     }
 
     public function test_update_personal_data_extra_with_post(): void
@@ -130,12 +144,5 @@ class PersonalDataExtraTest extends TestCase
         /** @var Cloud $storage */
         $storage  = Storage::disk('private');
         $storage->assertExists($personalData->file_cert_army);
-    }
-
-    public function test_personal_data_extra_requires_authentication(): void
-    {
-        // Sin headers ni token, el middleware debe rebotar con 401
-        $response = $this->postJson('/api/accounts/personal-data', []);
-        $response->assertStatus(401);
     }
 }

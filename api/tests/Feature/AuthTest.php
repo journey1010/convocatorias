@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Tests\Helpers\UserHelper;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Modules\User\Enums\TypeUser;
 
 class AuthTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     public function test_user_can_login_with_correct_credentials()
     {

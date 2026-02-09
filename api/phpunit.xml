@@ -29,7 +29,7 @@
         <env name="DB_DATABASE" value="postgres"/>
         <env name="DB_USERNAME" value="postgres"/>
         <env name="DB_PASSWORD" value="super_secure_root_password"/>
-        <env name="DB_SCHEMA" value="test_convocatoria"/>
+        <env name="DB_SCHEMA" value="test_convocatorias"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
