@@ -75,7 +75,7 @@ class AcademicRecordController extends \Modules\Shared\Controllers\Controller
         $ctx = RequestContextResolver::fromRequest($request);
         $result = $case->exec($ctx->userId);
 
-        return response()->json($result);
+        return response()->json(['items' => $result]);
     }
 
     public function GetFile(Request $request, string $filePath, GetProfessionalFileCase $case): BinaryFileResponse
