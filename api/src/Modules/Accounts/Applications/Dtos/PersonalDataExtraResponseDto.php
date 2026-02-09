@@ -24,7 +24,9 @@ class PersonalDataExtraResponseDto
 
     public static function fromModel($model): self
     {
-        $endpoint = '/api/accounts/personal-data/certificate';
+        $disability = FileUrlHelper::getFileUrl('personal-data.certificate', 'certificateType', $model->file_cert_disability);
+        $army = FileUrlHelper::getFileUrl('personal-data.certificate', 'certificateType', $model->file_cert_army);
+        $credentials = FileUrlHelper::getFileUrl('personal-data.certificate', 'certificateType', $model->file_cert_professional_credentials);
 
         return new self(
             department_id: $model->department_id,
@@ -34,11 +36,11 @@ class PersonalDataExtraResponseDto
             birthday: $model->birthday->format('Y-m-d'),
             genere: $model->genere,
             have_cert_disability: $model->have_cert_disability,
-            file_cert_disability:FileUrlHelper::getFileUrl($endpoint, $model->file_cert_disability),       
+            file_cert_disability: $disability,       
             have_cert_army: $model->have_cert_army,
-            file_cert_army: FileUrlHelper::getFileUrl($endpoint, $model->file_cert_army),
+            file_cert_army: $army,
             have_cert_professional_credentials: $model->have_cert_professional_credentials,
-            file_cert_professional_credentials: FileUrlHelper::getFileUrl($endpoint, $model->file_cert_professional_credentials),   
+            file_cert_professional_credentials: $credentials,   
             is_active_cert_professional_credentials: $model->is_active_cert_professional_credentials,
         );
     }

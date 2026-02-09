@@ -61,19 +61,20 @@ Route::prefix('accounts')->group(function () {
     Route::prefix('personal-data')->middleware('jwt:internal')->group(function () {
         Route::post('/', [PersonalDataExtraController::class, 'upsert']);
         Route::get('/', [PersonalDataExtraController::class, 'show']);
-        Route::get('certificate/{certificateType}',[PersonalDataExtraController::class, 'downloadCertificate'])->where('certificateType', '.*');
+        Route::get('certificate/{certificateType}',[PersonalDataExtraController::class, 'downloadCertificate'])
+            ->where('certificateType', '.*')
+            ->name('personal-data.certificate');
     });
 });
 
 Route::prefix('professional-records')->middleware('jwt:internal')->group(function () {
     Route::prefix('specialization-areas')->group(function () {
-Route::get('/', [SpecializationAreaController::class, 'list'])
+    Route::get('/', [SpecializationAreaController::class, 'list'])
             ->withoutMiddleware('jwt:internal');
         Route::post('/', [SpecializationAreaController::class, 'create']);
         Route::patch('/', [SpecializationAreaController::class, 'update']);
     });
 
-    // Academic Records
     Route::prefix('academic-records')->group(function () {
         Route::get('/', [AcademicRecordController::class, 'list']);
         Route::post('/', [AcademicRecordController::class, 'create']);
@@ -98,5 +99,7 @@ Route::get('/', [SpecializationAreaController::class, 'list'])
     });
 
     // File Downloads (shared endpoint for all professional record files)
-    Route::get('files/{filePath}', [AcademicRecordController::class, 'downloadFile'])->where('filePath', '.*');
+    Route::get('files/{filePath}', [AcademicRecordController::class, 'downloadFile'])
+        ->where('filePath', '.*')
+        ->name('professional-records.files.download');
 });

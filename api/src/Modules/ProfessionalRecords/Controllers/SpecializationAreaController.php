@@ -5,8 +5,7 @@ namespace Modules\ProfessionalRecords\Controllers;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Modules\ProfessionalRecords\Requests\{
     CreateSpecializationAreaRequest,
-    UpdateSpecializationAreaRequest,
-    DeleteSpecializationAreaRequest,
+    UpdateSpecializationAreaRequest
 };
 use Modules\ProfessionalRecords\Applications\{
     CreateSpecializationAreaCase,

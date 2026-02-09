@@ -9,10 +9,7 @@ use Modules\ProfessionalRecords\Services\ProfessionalFileStorageService;
 
 class CreateAcademicRecordCase
 {
-    public function __construct(
-        private AcademicRecordRepository $repository,
-        private ProfessionalFileStorageService $fileService
-    ) {}
+    public function __construct(private AcademicRecordRepository $repository, private ProfessionalFileStorageService $fileService) {}
 
     public function exec(CreateAcademicRecordDto $dto): AcademicRecordResponseDto
     {

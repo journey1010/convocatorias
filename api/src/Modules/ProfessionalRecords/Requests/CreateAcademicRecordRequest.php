@@ -2,8 +2,10 @@
 
 namespace Modules\ProfessionalRecords\Requests;
 
+use Illuminate\Validation\Rule;
 use Modules\Auth\Shared\Requests\Template;
-use Modules\ProfessionalRecords\Models\AcademicRecord;
+use Modules\ProfessionalRecords\Enums\AcademicLevel;
+use Modules\ProfessionalRecords\Enums\AcademicStatus;
 
 class CreateAcademicRecordRequest extends Template
 {
@@ -16,21 +18,10 @@ class CreateAcademicRecordRequest extends Template
     {
         return [
             'specialization_area_id' => 'required|integer|exists:specialization_areas,id',
-            'level' => 'required|integer|in:' . implode(',', [
-                AcademicRecord::LEVEL_PRIMARY,
-                AcademicRecord::LEVEL_SECONDARY,
-                AcademicRecord::LEVEL_TECHNICAL,
-                AcademicRecord::LEVEL_UNIVERSITY,
-                AcademicRecord::LEVEL_MASTER,
-                AcademicRecord::LEVEL_DOCTORATE,
-            ]),
-            'status' => 'required|integer|in:' . implode(',', [
-                AcademicRecord::STATUS_COMPLETED,
-                AcademicRecord::STATUS_IN_PROGRESS,
-                AcademicRecord::STATUS_INCOMPLETE,
-            ]),
-            'start_date' => 'required|date|before_or_equal:today',
-            'end_date' => 'nullable|date|after:start_date',
+            'level' => ['required', Rule::enum(AcademicLevel::class)],
+            'status' => ['required', Rule::enum(AcademicStatus::class)],
+            'start_date' => 'required|date|before_or_equal:today|date_format:Y-m-d',
+            'end_date' => 'nullable|date|after:start_date|date_format:Y-m-d',
             'description' => 'nullable|string|max:255',
             'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:4096',
         ];

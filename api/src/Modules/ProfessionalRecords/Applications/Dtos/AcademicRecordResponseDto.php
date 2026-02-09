@@ -3,6 +3,7 @@
 namespace Modules\ProfessionalRecords\Applications\Dtos;
 
 use Modules\ProfessionalRecords\Models\AcademicRecord;
+use Modules\Shared\Services\FileUrlHelper;
 
 class AcademicRecordResponseDto
 {
@@ -16,13 +17,13 @@ class AcademicRecordResponseDto
         public readonly string $start_date,
         public readonly ?string $end_date,
         public readonly ?string $description,
-        public readonly string $file,
-        public readonly string $created_at,
-        public readonly string $updated_at,
+        public readonly string $file
     ) {}
 
     public static function fromModel(AcademicRecord $record): self
     {
+        $fileUrl = FileUrlHelper::getFileUrl('professional-records.files.download', 'filePath', $record->file);
+
         return new self(
             id: $record->id,
             user_id: $record->user_id,
@@ -30,12 +31,10 @@ class AcademicRecordResponseDto
             specialization_area_name: $record->specializationArea->name,
             level: $record->level,
             status: $record->status,
-            start_date: $record->start_date->format('Y-m-d'),
-            end_date: $record->end_date?->format('Y-m-d'),
+            start_date: $record->start_date,
+            end_date: $record->end_date,
             description: $record->description,
-            file: $record->file,
-            created_at: $record->created_at->toISOString(),
-            updated_at: $record->updated_at->toISOString(),
+            file: $fileUrl
         );
     }
 }
