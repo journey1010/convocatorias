@@ -14,7 +14,6 @@ use Modules\Auth\Infrastructure\Context\RequestContextResolver;
 
 class OfficeController extends Controller
 {
-
     public function creater(CreateOfficesRequest $request)
     {
         Office::create([

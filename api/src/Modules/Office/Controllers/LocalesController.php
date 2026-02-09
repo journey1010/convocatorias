@@ -6,7 +6,6 @@ use Modules\Shared\Controllers\Controller;
 use Modules\Office\Models\Locale;
 use Modules\Office\Requests\CreateLocalesRequest;
 use Modules\Office\Requests\UpdateLocalesRequest;
-use Illuminate\Http\Request;
 
 class LocalesController extends Controller
 {
@@ -28,9 +27,9 @@ class LocalesController extends Controller
         return response()->json(['message' => 'Local actualizado correctamente'], 200);
     }
 
-    public function lister(Request $request)
+    public function lister()
     {
         $locales = Locale::all();
-        return response()->json($locales, 200);
+        return response()->json(['items' => $locales], 200);
     }
 }

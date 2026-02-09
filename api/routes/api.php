@@ -21,9 +21,9 @@ Route::prefix('/office/')->group(function () {
     Route::delete('remove', [OfficeController::class, 'deleter'])->middleware('jwt:internal');
 
     Route::prefix('locale')->group(function () {
-        Route::post('create', [\Modules\Office\Controllers\LocalesController::class, 'creater'])->middleware('jwt:internal');
-        Route::patch('update', [\Modules\Office\Controllers\LocalesController::class, 'updater'])->middleware('jwt:internal');
-        Route::get('list', [\Modules\Office\Controllers\LocalesController::class, 'lister'])->middleware('jwt:internal');
+        Route::post('/', [\Modules\Office\Controllers\LocalesController::class, 'creater'])->middleware('jwt:internal');
+        Route::patch('/', [\Modules\Office\Controllers\LocalesController::class, 'updater'])->middleware('jwt:internal');
+        Route::get('/', [\Modules\Office\Controllers\LocalesController::class, 'lister'])->middleware('jwt:internal');
     });
 });
 
