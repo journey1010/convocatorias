@@ -3,6 +3,7 @@
 namespace Modules\ProfessionalRecords\Applications\Dtos;
 
 use Modules\ProfessionalRecords\Models\JobRecord;
+use Modules\Shared\Services\FileUrlHelper;
 
 class JobRecordResponseDto
 {
@@ -16,13 +17,12 @@ class JobRecordResponseDto
         public readonly ?string $description,
         public readonly string $start_date,
         public readonly ?string $end_date,
-        public readonly ?string $file,
-        public readonly string $created_at,
-        public readonly string $updated_at,
+        public readonly ?string $file
     ) {}
 
     public static function fromModel(JobRecord $record): self
     {
+        $file = FileUrlHelper::getFileUrl('professional-records.files.download', 'filePath', $record->file);
         return new self(
             id: $record->id,
             user_id: $record->user_id,
@@ -31,11 +31,9 @@ class JobRecordResponseDto
             specialization_area: $record->specialization_area,
             status: $record->status,
             description: $record->description,
-            start_date: $record->start_date->format('Y-m-d'),
-            end_date: $record->end_date?->format('Y-m-d'),
-            file: $record->file,
-            created_at: $record->created_at->toISOString(),
-            updated_at: $record->updated_at->toISOString(),
+            start_date: $record->start_date,
+            end_date: $record->end_date,
+            file: $file,
         );
     }
 }

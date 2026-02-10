@@ -13,14 +13,6 @@ class JobRecord extends Model
 
     protected $table = 'job_records';
 
-    // Type enum constants
-    public const TYPE_PRIVATE = 1;
-    public const TYPE_PUBLIC = 2;
-
-    // Status enum constants
-    public const STATUS_IN_PROGRESS = 1;
-    public const STATUS_FINISHED = 2;
-
     protected $fillable = [
         'user_id',
         'entity_name',
@@ -32,16 +24,6 @@ class JobRecord extends Model
         'end_date',
         'file',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'start_date' => 'date',
-            'end_date' => 'date',
-            'type' => 'integer',
-            'status' => 'integer',
-        ];
-    }
 
     public function user(): BelongsTo
     {
