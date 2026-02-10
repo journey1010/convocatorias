@@ -8,9 +8,11 @@ class FileUrlHelper
     {
         if (!$filePath) {
             return null;
-        }        
-        $route = route($routeName, [$wildcard => $filePath]);
+        }
 
-        return $route;
+        $baseUrl = rtrim(config('app.url'), '/');
+        $relativeRoute = route($routeName, [$wildcard => $filePath], false);
+
+        return $baseUrl . $relativeRoute;
     }
 }

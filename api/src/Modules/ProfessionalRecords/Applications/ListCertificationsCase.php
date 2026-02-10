@@ -13,9 +13,8 @@ class ListCertificationsCase
     {
         $records = $this->repository->getByUserId($userId);
         
-        $file = FileUrlHelper::getFileUrl('professional-records.files.download', 'filePath', $records->file);
-
-        return $records->map(function ($record) use ($file) {
+        return $records->map(function ($record)  {
+            $file = FileUrlHelper::getFileUrl('professional-records.files.download', 'filePath', $record->file);
             return [
                 'id' => $record->id,
                 'name' => $record->name,
