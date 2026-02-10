@@ -21,7 +21,7 @@ class UpdateAcademicRecordCase
             $record = $this->repository->findByIdOrFail($dto->id);
             
             if($record->user_id !== $userId){
-                throw new JsonResponseException('Unauthorized', 401);
+                throw new JsonResponseException('Unauthorized', 403);
             }
 
             $this->fileService->user_id = (string) $userId;

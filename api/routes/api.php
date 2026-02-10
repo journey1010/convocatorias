@@ -92,8 +92,8 @@ Route::prefix('professional-records')->middleware('jwt:internal')->group(functio
     Route::prefix('job-records')->group(function () {
         Route::get('/', [JobRecordController::class, 'list']);
         Route::post('/', [JobRecordController::class, 'create']);
-        Route::post('/{id}', [JobRecordController::class, 'update']);
-        Route::delete('/{id}', [JobRecordController::class, 'delete']);
+        Route::post('/update', [JobRecordController::class, 'update']);
+        Route::delete('/', [JobRecordController::class, 'delete']);
     });
 
     Route::get('files/{filePath}', [\Modules\ProfessionalRecords\Controllers\SharedController::class, 'GetFile'])

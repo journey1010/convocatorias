@@ -44,13 +44,14 @@ class CertificationController extends \Modules\Shared\Controllers\Controller
         $ctx = RequestContextResolver::fromRequest($request);
 
         $dto = new UpdateCertificationDto(
+            id: $request->input('id'),
             name: $request->input('name'),
             year: $request->input('year'),
             hours: $request->input('hours'),
             file: $request->file('file'),
         );
 
-        $result = $case->exec($request->input('id'), $ctx->userId, $dto);
+        $result = $case->exec($ctx->userId, $dto);
 
         return response()->json($result);
     }

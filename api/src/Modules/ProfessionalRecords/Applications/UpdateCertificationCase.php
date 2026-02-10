@@ -15,13 +15,13 @@ class UpdateCertificationCase
         private ProfessionalFileStorageService $fileService
     ) {}
 
-    public function exec(int $recordId, int $userId, UpdateCertificationDto $dto): CertificationResponseDto
+    public function exec(int $userId, UpdateCertificationDto $dto): CertificationResponseDto
     {
-        return DB::transaction(function () use ($recordId, $userId, $dto) {
-            $record = $this->repository->findByIdOrFail($recordId);
+        return DB::transaction(function () use ($userId, $dto) {
+            $record = $this->repository->findByIdOrFail($dto->id);
 
             if ($record->user_id != $userId) {
-                throw new JsonResponseException('No tienes permiso para actualizar este registro', 403);
+                throw new JsonResponseException('Unauthorized', 403);
             }
 
             $this->fileService->user_id = (string) $userId;
