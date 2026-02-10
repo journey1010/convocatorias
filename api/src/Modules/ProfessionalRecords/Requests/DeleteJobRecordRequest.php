@@ -8,7 +8,7 @@ class DeleteJobRecordRequest extends Template
 {
     public function authorize(): bool
     {
-        return $this->verifyPermission(['p.postulante']);
+        return $this->verifyPermission('p.postulante');
     }
 
     public function rules(): array

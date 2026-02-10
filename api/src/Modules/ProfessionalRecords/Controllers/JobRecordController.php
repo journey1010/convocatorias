@@ -64,9 +64,10 @@ class JobRecordController extends \Modules\Shared\Controllers\Controller
         return response()->json($result);
     }
 
-    public function delete(DeleteJobRecordRequest $request, DeleteJobRecordCase $case, int $id): JsonResponse
+    public function delete(DeleteJobRecordRequest $request, DeleteJobRecordCase $case): JsonResponse
     {
-        $case->exec($id);
+        $ctx = RequestContextResolver::fromRequest($request);
+        $case->exec($request->input('id'), $ctx->userId);
 
         return response()->json(['message' => 'Registro laboral eliminado exitosamente']);
     }
