@@ -24,7 +24,7 @@ class SpecializationAreaRepository
     public function update(SpecializationArea $area, array $data): SpecializationArea
     {
         $area->update($data);
-        return $area->fresh();
+        return $area;
     }
 
     public function delete(SpecializationArea $area): bool

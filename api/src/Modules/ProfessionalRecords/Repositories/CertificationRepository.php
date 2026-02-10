@@ -53,7 +53,7 @@ class CertificationRepository
     public function update(Certification $record, array $data): Certification
     {
         $record->update($data);
-        return $record->fresh();
+        return $record;
     }
 
     public function delete(Certification $record): bool

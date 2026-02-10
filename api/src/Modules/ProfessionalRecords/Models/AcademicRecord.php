@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\User\Models\User;
-use Modules\ProfessionalRecords\Enums\{AcademicLevel, AcademicStatus};
 
 class AcademicRecord extends Model
 {

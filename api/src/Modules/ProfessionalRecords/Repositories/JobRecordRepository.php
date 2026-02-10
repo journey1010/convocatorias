@@ -53,7 +53,7 @@ class JobRecordRepository
     public function update(JobRecord $record, array $data): JobRecord
     {
         $record->update($data);
-        return $record->fresh();
+        return $record;
     }
 
     public function delete(JobRecord $record): bool

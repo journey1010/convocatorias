@@ -54,7 +54,7 @@ class AcademicRecordRepository
     public function update(AcademicRecord $record, array $data): AcademicRecord
     {
         $record->update($data);
-        return $record->fresh(['specializationArea']);
+        return $record;
     }
 
     public function delete(AcademicRecord $record): bool
