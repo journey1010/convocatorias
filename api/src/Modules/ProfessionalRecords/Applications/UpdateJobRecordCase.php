@@ -2,6 +2,7 @@
 
 namespace Modules\ProfessionalRecords\Applications;
 
+use JsonException;
 use Illuminate\Support\Facades\DB;
 use Modules\ProfessionalRecords\Applications\Dtos\{UpdateJobRecordDto, JobRecordResponseDto};
 use Modules\ProfessionalRecords\Repositories\JobRecordRepository;
@@ -14,10 +15,14 @@ class UpdateJobRecordCase
         private ProfessionalFileStorageService $fileService
     ) {}
 
-    public function exec(int $recordId, int $userId, UpdateJobRecordDto $dto): JobRecordResponseDto
+    public function exec(int $userId, UpdateJobRecordDto $dto): JobRecordResponseDto
     {
-        return DB::transaction(function () use ($recordId, $userId, $dto) {
-            $record = $this->repository->findByIdOrFail($recordId);
+        return DB::transaction(function () use ($userId, $dto) {
+            $record = $this->repository->findByIdOrFail($dto->id);
+
+            if($record->user_id !== $userId){
+                throw new JsonException('Unauthorized', 403);
+            }
 
             $this->fileService->user_id = (string) $userId;
 
@@ -31,7 +36,6 @@ class UpdateJobRecordCase
                 'end_date' => $dto->end_date,
             ];
 
-            // Update file if provided
             if ($dto->file) {
                 $data['file'] = $this->fileService->updateFile(
                     $record->file,

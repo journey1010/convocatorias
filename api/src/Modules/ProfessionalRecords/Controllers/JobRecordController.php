@@ -43,11 +43,12 @@ class JobRecordController extends \Modules\Shared\Controllers\Controller
         return response()->json($result, 201);
     }
 
-    public function update(UpdateJobRecordRequest $request, UpdateJobRecordCase $case, int $id): JsonResponse
+    public function update(UpdateJobRecordRequest $request, UpdateJobRecordCase $case): JsonResponse
     {
         $ctx = RequestContextResolver::fromRequest($request);
 
         $dto = new UpdateJobRecordDto(
+            id: $request->input('id'),
             entity_name: $request->input('entity_name'),
             type: $request->input('type'),
             specialization_area: $request->input('specialization_area'),
@@ -58,7 +59,7 @@ class JobRecordController extends \Modules\Shared\Controllers\Controller
             file: $request->file('file'),
         );
 
-        $result = $case->exec($id, $ctx->userId, $dto);
+        $result = $case->exec($ctx->userId, $dto);
 
         return response()->json($result);
     }

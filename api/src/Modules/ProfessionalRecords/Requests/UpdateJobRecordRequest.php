@@ -3,7 +3,8 @@
 namespace Modules\ProfessionalRecords\Requests;
 
 use Modules\Auth\Shared\Requests\Template;
-use Modules\ProfessionalRecords\Models\JobRecord;
+use Modules\ProfessionalRecords\Enums\{JobStatus, JobType};
+use Illuminate\Validation\Rule;
 
 class UpdateJobRecordRequest extends Template
 {
@@ -16,15 +17,9 @@ class UpdateJobRecordRequest extends Template
     {
         return [
             'entity_name' => 'required|string|max:255',
-            'type' => 'required|integer|in:' . implode(',', [
-                JobRecord::TYPE_PRIVATE,
-                JobRecord::TYPE_PUBLIC,
-            ]),
+            'type' => ['required', Rule::enum(JobType::class)],
             'specialization_area' => 'required|string|max:255',
-            'status' => 'required|integer|in:' . implode(',', [
-                JobRecord::STATUS_IN_PROGRESS,
-                JobRecord::STATUS_FINISHED,
-            ]),
+            'status' => ['required', Rule::enum(JobStatus::class)],
             'description' => 'nullable|string|max:500',
             'start_date' => 'required|date|before_or_equal:today',
             'end_date' => 'nullable|date|after:start_date',
@@ -37,10 +32,10 @@ class UpdateJobRecordRequest extends Template
         return [
             'entity_name.required' => 'El nombre de la entidad es requerido',
             'type.required' => 'El tipo de entidad es requerido',
-            'type.in' => 'El tipo debe ser privado o público',
+            'type.enum' => 'El tipo debe ser privado o público',
             'specialization_area.required' => 'El área de especialización es requerida',
             'status.required' => 'El estado es requerido',
-            'status.in' => 'El estado no es válido',
+            'status.enum' => 'El estado no es válido',
             'description.max' => 'La descripción no debe exceder 500 caracteres',
             'start_date.required' => 'La fecha de inicio es requerida',
             'end_date.after' => 'La fecha de fin debe ser posterior a la fecha de inicio',

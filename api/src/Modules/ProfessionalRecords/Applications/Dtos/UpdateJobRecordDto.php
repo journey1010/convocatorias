@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 class UpdateJobRecordDto
 {
     public function __construct(
+        public readonly int $id,
         public readonly string $entity_name,
         public readonly int $type,
         public readonly string $specialization_area,
