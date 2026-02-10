@@ -8,7 +8,7 @@ class ListJobRecordsCase
 {
     public function __construct(private JobRecordRepository $repository) {}
 
-    public function exec(int $userId): array
+    public function exec(int $userId)
     {
         $records = $this->repository->getByUserId($userId);
 
@@ -20,12 +20,10 @@ class ListJobRecordsCase
                 'specialization_area' => $record->specialization_area,
                 'status' => $record->status,
                 'description' => $record->description,
-                'start_date' => $record->start_date->format('Y-m-d'),
-                'end_date' => $record->end_date?->format('Y-m-d'),
+                'start_date' => $record->start_date,
+                'end_date' => $record->end_date,
                 'file' => $record->file,
-                'created_at' => $record->created_at->toISOString(),
-                'updated_at' => $record->updated_at->toISOString(),
             ];
-        })->toArray();
+        });
     }
 }

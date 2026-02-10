@@ -75,7 +75,7 @@ class JobRecordController extends \Modules\Shared\Controllers\Controller
         $ctx = RequestContextResolver::fromRequest($request);
         $result = $case->exec($ctx->userId);
 
-        return response()->json($result);
+        return response()->json(['items' => $result]);
     }
 
     public function downloadFile(Request $request, string $filePath, GetProfessionalFileCase $case): BinaryFileResponse
