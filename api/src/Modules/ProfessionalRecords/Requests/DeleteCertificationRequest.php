@@ -14,7 +14,7 @@ class DeleteCertificationRequest extends Template
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:certifications,id',
+            'id' => 'required|integer',
         ];
     }
 }

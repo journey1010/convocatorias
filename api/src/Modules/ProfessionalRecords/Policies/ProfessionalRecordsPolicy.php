@@ -11,12 +11,10 @@ class ProfessionalRecordsPolicy
 
     public function viewFile(RequestContext $context, int $ownerId): bool
     {
-        // Users with cv.evaluation permission can view all files
         if ($this->permissionChecker->hasPermissionByName($context, 'cv.evaluation')) {
             return true;
         }
-
-        // Users can view their own files
+        
         if ($ownerId == $context->userId) {
             return true;
         }

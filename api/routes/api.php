@@ -85,8 +85,8 @@ Route::prefix('professional-records')->middleware('jwt:internal')->group(functio
     Route::prefix('certifications')->group(function () {
         Route::get('/', [CertificationController::class, 'list']);
         Route::post('/', [CertificationController::class, 'create']);
-        Route::post('/{id}', [CertificationController::class, 'update']);
-        Route::delete('/{id}', [CertificationController::class, 'delete']);
+        Route::post('/update', [CertificationController::class, 'update']);
+        Route::delete('/', [CertificationController::class, 'delete']);
     });
 
     Route::prefix('job-records')->group(function () {
@@ -96,7 +96,7 @@ Route::prefix('professional-records')->middleware('jwt:internal')->group(functio
         Route::delete('/{id}', [JobRecordController::class, 'delete']);
     });
 
-    Route::get('files/{filePath}', [AcademicRecordController::class, 'GetFile'])
+    Route::get('files/{filePath}', [\Modules\ProfessionalRecords\Controllers\SharedController::class, 'GetFile'])
         ->where('filePath', '.*')
         ->name('professional-records.files.download');
 });

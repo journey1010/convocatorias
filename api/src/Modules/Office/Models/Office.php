@@ -27,6 +27,7 @@ class Office extends Model {
         $query = DB::table('offices as o')
             ->select(
                 'o.id', 
+                'o.locale_id',
                 'o.name', 
                 'o.status'
             )

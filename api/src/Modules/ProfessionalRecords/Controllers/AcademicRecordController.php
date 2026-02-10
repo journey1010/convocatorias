@@ -2,8 +2,7 @@
 
 namespace Modules\ProfessionalRecords\Controllers;
 
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\{JsonResponse, BinaryFileResponse};
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Modules\Auth\Infrastructure\Context\RequestContextResolver;
 use Modules\ProfessionalRecords\Requests\{
     CreateAcademicRecordRequest,
@@ -15,8 +14,7 @@ use Modules\ProfessionalRecords\Applications\{
     CreateAcademicRecordCase,
     UpdateAcademicRecordCase,
     DeleteAcademicRecordCase,
-    ListAcademicRecordsCase,
-    GetProfessionalFileCase
+    ListAcademicRecordsCase
 };
 use Modules\ProfessionalRecords\Applications\Dtos\{CreateAcademicRecordDto, UpdateAcademicRecordDto};
 
@@ -76,11 +74,5 @@ class AcademicRecordController extends \Modules\Shared\Controllers\Controller
         $result = $case->exec($ctx->userId);
 
         return response()->json(['items' => $result]);
-    }
-
-    public function GetFile(Request $request, string $filePath, GetProfessionalFileCase $case): BinaryFileResponse
-    {
-        $ctx = RequestContextResolver::fromRequest($request);
-        return $case->exec($filePath, $ctx);
     }
 }

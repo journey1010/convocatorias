@@ -14,6 +14,7 @@ class UpdateCertificationRequest extends Template
     public function rules(): array
     {
         return [
+            'id' => 'required|integer',
             'name' => 'required|string|max:255',
             'year' => 'required|integer|min:1900|max:' . date('Y'),
             'hours' => 'required|integer|min:1|max:9999',
@@ -24,6 +25,8 @@ class UpdateCertificationRequest extends Template
     public function messages(): array
     {
         return [
+            'id.required' => 'El id es requerido',
+            'id.integer' => 'El id debe ser un número entero',
             'name.required' => 'El nombre de la certificación es requerido',
             'name.max' => 'El nombre no debe exceder 255 caracteres',
             'year.required' => 'El año es requerido',

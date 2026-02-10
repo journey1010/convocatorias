@@ -39,7 +39,7 @@ class CertificationController extends \Modules\Shared\Controllers\Controller
         return response()->json($result, 201);
     }
 
-    public function update(UpdateCertificationRequest $request, UpdateCertificationCase $case, int $id): JsonResponse
+    public function update(UpdateCertificationRequest $request, UpdateCertificationCase $case): JsonResponse
     {
         $ctx = RequestContextResolver::fromRequest($request);
 
@@ -50,14 +50,15 @@ class CertificationController extends \Modules\Shared\Controllers\Controller
             file: $request->file('file'),
         );
 
-        $result = $case->exec($id, $ctx->userId, $dto);
+        $result = $case->exec($request->input('id'), $ctx->userId, $dto);
 
         return response()->json($result);
     }
 
-    public function delete(DeleteCertificationRequest $request, DeleteCertificationCase $case, int $id): JsonResponse
+    public function delete(DeleteCertificationRequest $request, DeleteCertificationCase $case): JsonResponse
     {
-        $case->exec($id);
+        $ctx = RequestContextResolver::fromRequest($request);
+        $case->exec($request->input('id'), $ctx->userId);
 
         return response()->json(['message' => 'Certificación eliminada exitosamente']);
     }
@@ -68,11 +69,5 @@ class CertificationController extends \Modules\Shared\Controllers\Controller
         $result = $case->exec($ctx->userId);
 
         return response()->json(['items' => $result]);
-    }
-
-    public function downloadFile(Request $request, string $filePath, GetProfessionalFileCase $case): BinaryFileResponse
-    {
-        $ctx = RequestContextResolver::fromRequest($request);
-        return $case->exec($filePath, $ctx);
     }
 }
