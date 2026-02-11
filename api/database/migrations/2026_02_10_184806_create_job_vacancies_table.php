@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('locale_id')->constrained('locales');
             $table->string('title', 400);
             $table->tinyInteger('status');
-            $table->boolean('mode'); // Indica si una convocatoria permite que un postulante postule a varias vacantes o solo una
+            $table->boolean('mode')->default(false); // Indica si una convocatoria permite que un postulante postule a varias vacantes o solo una
             $table->date('start_date');
             $table->date('close_date');
             $table->timestamps();

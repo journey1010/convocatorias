@@ -17,9 +17,11 @@ return new class extends Migration
             $table->foreignId('department_id')->constrained('departments');
             $table->foreignId('province_id')->constrained('provinces');
             $table->foreignId('district_id')->constrained('districts');
+            $table->string('ruc', 11);
             $table->string('address');
             $table->date('birthday');
             $table->tinyInteger('genere');
+            $table->string('file_dni', 400)->nullable();
             $table->boolean('have_cert_disability');
             $table->string('file_cert_disability', 400)->nullable();
             $table->boolean('have_cert_army');

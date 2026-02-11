@@ -14,6 +14,8 @@ class StorePersonalDataExtraDto
         public readonly string $address,
         public readonly string $birthday,
         public readonly int $genere,
+        public readonly string $ruc,
+        public readonly ?UploadedFile $file_dni,
         public readonly bool $have_cert_disability,
         public readonly ?UploadedFile $file_cert_disability,
         public readonly bool $have_cert_army,

@@ -36,11 +36,19 @@ class UpsertPersonalDataExtraCase
                 'address' => $dto->address,
                 'birthday' => $dto->birthday,
                 'genere' => $dto->genere,
+                'ruc' => $dto->ruc,
                 'have_cert_disability' => $dto->have_cert_disability,
                 'have_cert_army' => $dto->have_cert_army,
                 'have_cert_professional_credentials' => $dto->have_cert_professional_credentials,
                 'is_active_cert_professional_credentials' => $dto->is_active_cert_professional_credentials,
             ];
+
+            if ($dto->file_dni) {
+                $data['file_dni'] = $this->fileService->storeCertificate(
+                    $dto->file_dni,
+                    'dni'
+                );
+            }
 
             // Store certificates if provided
             if ($dto->have_cert_disability && $dto->file_cert_disability) {
@@ -80,12 +88,20 @@ class UpsertPersonalDataExtraCase
                 'address' => $dto->address,
                 'birthday' => $dto->birthday,
                 'genere' => $dto->genere,
+                'ruc' => $dto->ruc,
                 'have_cert_disability' => $dto->have_cert_disability,
                 'have_cert_army' => $dto->have_cert_army,
                 'have_cert_professional_credentials' => $dto->have_cert_professional_credentials,
                 'is_active_cert_professional_credentials' => $dto->is_active_cert_professional_credentials,
             ];
 
+            if ($dto->file_dni) {
+                $data['file_dni'] = $this->fileService->updateCertificate(
+                    $personalData->file_dni,
+                    $dto->file_dni,
+                    'dni'
+                );
+            }
             // Update disability certificate if provided
             if ($dto->file_cert_disability) {
                 $data['file_cert_disability'] = $this->fileService->updateCertificate(
