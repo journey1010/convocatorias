@@ -56,7 +56,7 @@ Route::prefix('ubigeo')->group(function () {
 
 Route::prefix('accounts')->group(function () {
     Route::get('token', [TokenController::class, 'generate'])->middleware('anti.bot:token_request,3,6');
-    Route::get('register', [AccountController::class, 'register'])->middleware('anti.bot:register_action,6,2');
+    Route::post('register', [AccountController::class, 'register'])->middleware('anti.bot:register_action,6,2');
 
     Route::prefix('personal-data')->middleware('jwt:internal')->group(function () {
         Route::post('/', [PersonalDataExtraController::class, 'upsert']);

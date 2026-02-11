@@ -12,7 +12,6 @@ class CreateAccountRequest extends Template
     {
         return [
             'token' => 'required|string',
-            'g-recaptcha-response' => 'required|recaptchav3:register,0.5',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'dni' => 'required|string|regex:/^\d{8}$/|unique:users,dni',
