@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('job_vancancy_files', function (Blueprint $table) {
+        Schema::create('job_vacancy_files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('locale_id')->constrained('locales');
             $table->foreignId('job_vancancy_id')->constrained('job_vacancies');
@@ -20,6 +20,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('job_vancancy_files');
+        Schema::dropIfExists('job_vacancy_files');
     }
 };

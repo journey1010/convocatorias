@@ -14,6 +14,7 @@ use Modules\ProfessionalRecords\Controllers\{
     JobRecordController
 };
 use Modules\Accounts\Controllers\{TokenController, AccountController, PersonalDataExtraController};
+use Modules\JobVacancies\Controllers\{JobVacancyController, JobVacancyFileController, JobProfileController};
 
 Route::prefix('/auth/')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -99,4 +100,26 @@ Route::prefix('professional-records')->middleware('jwt:internal')->group(functio
     Route::get('files/{filePath}', [\Modules\ProfessionalRecords\Controllers\SharedController::class, 'GetFile'])
         ->where('filePath', '.*')
         ->name('professional-records.files.download');
+});
+
+// Job Vacancies routes
+Route::prefix('job-vacancies')->group(function () {
+    // Public routes
+    Route::get('/', [JobVacancyController::class, 'list']);
+    Route::get('/show', [JobVacancyController::class, 'show']);
+    Route::get('/files/download/{filePath}', [JobVacancyFileController::class, 'download'])
+        ->where('filePath', '.*')
+        ->name('job-vacancies.files.download');
+    
+    // Protected routes (admin only)
+    Route::middleware('jwt:internal')->group(function () {
+        Route::post('/', [JobVacancyController::class, 'create']);
+        Route::patch('/', [JobVacancyController::class, 'update']);
+        Route::patch('/status', [JobVacancyController::class, 'updateStatus']);
+        
+        Route::post('/files', [JobVacancyFileController::class, 'attach']);
+        Route::patch('/files', [JobVacancyFileController::class, 'updateName']);
+        
+        Route::post('/profiles', [JobProfileController::class, 'manage']);
+    });
 });
