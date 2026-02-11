@@ -29,6 +29,7 @@ class PersonalDataExtraResponseDto
         $disability = FileUrlHelper::getFileUrl('personal-data.certificate', 'certificateType', $model->file_cert_disability);
         $army = FileUrlHelper::getFileUrl('personal-data.certificate', 'certificateType', $model->file_cert_army);
         $credentials = FileUrlHelper::getFileUrl('personal-data.certificate', 'certificateType', $model->file_cert_professional_credentials);
+        $file_dni = FileUrlHelper::getFileUrl('personal-data.certificate', 'certificateType', $model->file_dni);
 
         return new self(
             department_id: $model->department_id,
@@ -38,7 +39,7 @@ class PersonalDataExtraResponseDto
             birthday: $model->birthday->format('Y-m-d'),
             genere: $model->genere,
             ruc: $model->ruc,
-            file_dni: $model->file_dni,
+            file_dni: $file_dni,
             have_cert_disability: $model->have_cert_disability,
             file_cert_disability: $disability,       
             have_cert_army: $model->have_cert_army,
