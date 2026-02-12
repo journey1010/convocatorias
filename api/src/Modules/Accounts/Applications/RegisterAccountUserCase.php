@@ -86,12 +86,12 @@ class RegisterAccountUserCase {
                 'email'     => $inputs['email'],
                 'phone'     => $inputs['phone'],
                 'password'  => $inputs['password'],
-                'status'    => StatusUser::INACTIVE->value,
+                'status'    => StatusUser::ACTIVE->value,
                 'level'     => 1,
                 'type_user' => TypeUser::citizen->value,
             ]);
 
-            $user->syncPermissions(['postulante']);
+            $user->syncRoles(['p.postulante']);
         });
     }
 }
