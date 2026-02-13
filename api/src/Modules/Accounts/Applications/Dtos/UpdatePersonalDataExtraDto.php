@@ -13,7 +13,7 @@ class UpdatePersonalDataExtraDto
         public readonly int $district_id,
         public readonly string $address,
         public readonly string $birthday,
-        public readonly int $genere,
+        public readonly int $gender,
         public readonly bool $have_cert_disability,
         public readonly ?UploadedFile $file_cert_disability,
         public readonly bool $have_cert_army,

@@ -13,7 +13,7 @@ class StorePersonalDataExtraDto
         public readonly int $district_id,
         public readonly string $address,
         public readonly string $birthday,
-        public readonly int $genere,
+        public readonly int $gender,
         public readonly string $ruc,
         public readonly ?UploadedFile $file_dni,
         public readonly bool $have_cert_disability,

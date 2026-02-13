@@ -48,7 +48,7 @@ class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
             ruc: $request->input('ruc'),
             address: $request->input('address'),
             birthday: $request->input('birthday'),
-            genere: $request->input('genere'),
+            gender: $request->input('gender'),
             file_dni: $request->file('file_dni'),
             have_cert_disability: $request->boolean('have_cert_disability'),
             file_cert_disability: $request->file('file_cert_disability'),

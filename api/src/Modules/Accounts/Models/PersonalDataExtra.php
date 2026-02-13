@@ -22,7 +22,7 @@ class PersonalDataExtra extends Model
         'ruc',
         'address',
         'birthday',
-        'genere',
+        'gender',
         'file_dni',
         'have_cert_disability',
         'file_cert_disability',
