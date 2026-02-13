@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Accounts\Applications\Dtos\{StorePersonalDataExtraDto, PersonalDataExtraResponseDto};
 use Modules\Accounts\Repositories\PersonalDataExtraRepository;
 use Modules\Accounts\Services\FileStorageService;
+use Modules\Accounts\Models\PersonalDataExtra;
 
 class UpsertPersonalDataExtraCase
 {
@@ -13,134 +14,55 @@ class UpsertPersonalDataExtraCase
 
     public function exec(StorePersonalDataExtraDto $dto): PersonalDataExtraResponseDto
     {
-        $existingPersonalData = $this->repository->findByUserId($dto->user_id);
+        $model = $this->repository->findByUserId($dto->user_id);
         $this->fileService->user_id = $dto->user_id;
 
-        if ($existingPersonalData) {
-            return $this->updateExistingData($existingPersonalData, $dto);
+        return DB::transaction(function () use ($dto, $model) {
+            $data = $dto->toArray();
+
+            $fileFields = [
+                'file_dni' => 'dni',
+                'file_cert_disability' => 'disability',
+                'file_cert_army' => 'army',
+                'file_cert_professional_credentials' => 'professional_credentials',
+            ];
+
+            foreach ($fileFields as $field => $type) {
+                $data[$field] = $this->processFile($model, $dto, $field, $type);
+            }
+
+            $result = $model 
+                ? $this->repository->update($model, $data)
+                : $this->repository->create(array_merge($data, ['user_id' => $dto->user_id]));
+
+            return PersonalDataExtraResponseDto::fromModel($result);
+        });
+    }
+
+    private function processFile(?PersonalDataExtra $model, StorePersonalDataExtraDto $dto, string $field, string $type): ?string
+    {
+        $newFile = $dto->{$field};
+        $oldPath = $model?->{$field};
+        
+        if ($newFile) {
+            return $model 
+                ? $this->fileService->updateCertificate($oldPath, $newFile, $type)
+                : $this->fileService->storeCertificate($newFile, $type);
         }
 
-        // Create new record if it doesn't exist
-        return $this->createNewData($dto);
-    }
+        /**
+         * Determina dinámicamente el nombre del campo de control (booleano) en el DTO 
+         * y gestiona la eliminación del archivo si la condición es falsa.
+         */
+        $conditionField = str_replace(['file_', 'cert_'], ['', 'have_cert_'], $field);
 
-    private function createNewData(StorePersonalDataExtraDto $dto): PersonalDataExtraResponseDto
-    {
-        
-        return DB::transaction(function () use ($dto) {
-            $data = [
-                'user_id' => $dto->user_id,
-                'department_id' => $dto->department_id,
-                'province_id' => $dto->province_id,
-                'district_id' => $dto->district_id,
-                'address' => $dto->address,
-                'birthday' => $dto->birthday,
-                'gender' => $dto->gender,
-                'ruc' => $dto->ruc,
-                'have_cert_disability' => $dto->have_cert_disability,
-                'have_cert_army' => $dto->have_cert_army,
-                'have_cert_professional_credentials' => $dto->have_cert_professional_credentials,
-                'is_active_cert_professional_credentials' => $dto->is_active_cert_professional_credentials,
-            ];
-
-            if ($dto->file_dni) {
-                $data['file_dni'] = $this->fileService->storeCertificate(
-                    $dto->file_dni,
-                    'dni'
-                );
+        if (isset($dto->{$conditionField}) && $dto->{$conditionField} === false) {
+            if ($oldPath) {
+                $this->fileService->deleteCertificate($oldPath);
             }
+            return null;
+        }
 
-            // Store certificates if provided
-            if ($dto->have_cert_disability && $dto->file_cert_disability) {
-                $data['file_cert_disability'] = $this->fileService->storeCertificate(
-                    $dto->file_cert_disability,
-                    'disability'
-                );
-            }
-
-            if ($dto->have_cert_army && $dto->file_cert_army) {
-                $data['file_cert_army'] = $this->fileService->storeCertificate(
-                    $dto->file_cert_army,
-                    'army'
-                );
-            }
-
-            if ($dto->have_cert_professional_credentials && $dto->file_cert_professional_credentials) {
-                $data['file_cert_professional_credentials'] = $this->fileService->storeCertificate(
-                    $dto->file_cert_professional_credentials,
-                    'professional_credentials'
-                );
-            }
-
-            $personalData = $this->repository->create($data);
-
-            return PersonalDataExtraResponseDto::fromModel($personalData);
-        });
-    }
-
-    private function updateExistingData($personalData, StorePersonalDataExtraDto $dto): PersonalDataExtraResponseDto
-    {
-        return DB::transaction(function () use ($personalData, $dto) {
-            $data = [
-                'department_id' => $dto->department_id,
-                'province_id' => $dto->province_id,
-                'district_id' => $dto->district_id,
-                'address' => $dto->address,
-                'birthday' => $dto->birthday,
-                'gender' => $dto->gender,
-                'ruc' => $dto->ruc,
-                'have_cert_disability' => $dto->have_cert_disability,
-                'have_cert_army' => $dto->have_cert_army,
-                'have_cert_professional_credentials' => $dto->have_cert_professional_credentials,
-                'is_active_cert_professional_credentials' => $dto->is_active_cert_professional_credentials,
-            ];
-
-            if ($dto->file_dni) {
-                $data['file_dni'] = $this->fileService->updateCertificate(
-                    $personalData->file_dni,
-                    $dto->file_dni,
-                    'dni'
-                );
-            }
-            // Update disability certificate if provided
-            if ($dto->file_cert_disability) {
-                $data['file_cert_disability'] = $this->fileService->updateCertificate(
-                    $personalData->file_cert_disability,
-                    $dto->file_cert_disability,
-                    'disability'
-                );
-            } elseif (!$dto->have_cert_disability) {
-                $this->fileService->deleteCertificate($personalData->file_cert_disability);
-                $data['file_cert_disability'] = null;
-            }
-
-            // Update army certificate if provided
-            if ($dto->file_cert_army) {
-                $data['file_cert_army'] = $this->fileService->updateCertificate(
-                    $personalData->file_cert_army,
-                    $dto->file_cert_army,
-                    'army'
-                );
-            } elseif (!$dto->have_cert_army) {
-                $this->fileService->deleteCertificate($personalData->file_cert_army);
-                $data['file_cert_army'] = null;
-            }
-
-            // Update professional credentials certificate if provided
-            if ($dto->file_cert_professional_credentials) {
-                $data['file_cert_professional_credentials'] = $this->fileService->updateCertificate(
-                    $personalData->file_cert_professional_credentials,
-                    $dto->file_cert_professional_credentials,
-                    'professional_credentials'
-                );
-            } elseif (!$dto->have_cert_professional_credentials) {
-                $this->fileService->deleteCertificate($personalData->file_cert_professional_credentials);
-                $data['file_cert_professional_credentials'] = null;
-            }
-
-            $updated = $this->repository->update($personalData, $data);
-
-            return PersonalDataExtraResponseDto::fromModel($updated);
-        });
+        return $oldPath;
     }
 }
