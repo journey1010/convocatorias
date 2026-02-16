@@ -10,7 +10,7 @@ class AcademicRecordResponseDto
     public function __construct(
         public readonly int $id,
         public readonly int $user_id,
-        public readonly int $specialization_area_id,
+        public readonly ?int $specialization_area_id,
         public readonly string $specialization_area_name,
         public readonly int $level,
         public readonly int $status,

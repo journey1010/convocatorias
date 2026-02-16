@@ -9,6 +9,8 @@ use Modules\ProfessionalRecords\Enums\AcademicStatus;
 
 class CreateAcademicRecordRequest extends Template
 {
+    protected $stopOnFirstFailure = true;
+    
     public function authorize(): bool
     {
         return $this->verifyPermission(['p.postulante']);
@@ -17,8 +19,13 @@ class CreateAcademicRecordRequest extends Template
     public function rules(): array
     {
         return [
-            'specialization_area_id' => 'required|integer|exists:specialization_areas,id',
             'level' => ['required', Rule::enum(AcademicLevel::class)],
+            'specialization_area_id' => [
+                Rule::requiredIf(fn () => $this->input('level') > AcademicLevel::LEVEL_PRIMARY->value),
+                'nullable',
+                'integer',
+                'exists:specialization_areas,id',
+            ],
             'status' => ['required', Rule::enum(AcademicStatus::class)],
             'start_date' => 'required|date|before_or_equal:today|date_format:Y-m-d',
             'end_date' => 'nullable|date|after:start_date|date_format:Y-m-d',

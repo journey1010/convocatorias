@@ -17,7 +17,12 @@ class UpdateAcademicRecordRequest extends Template
     {
         return [
             'id' => 'required|integer',
-            'specialization_area_id' => 'required|integer|exists:specialization_areas,id',
+            'specialization_area_id' => [
+                Rule::requiredIf(fn () => $this->input('level') > AcademicLevel::LEVEL_PRIMARY->value),
+                'nullable',
+                'integer',
+                'exists:specialization_areas,id',
+            ],
             'level' => ['required', 'integer', Rule::enum(AcademicLevel::class)],
             'status' => ['required', 'integer', Rule::enum(AcademicStatus::class)],
             'start_date' => 'required|date|before_or_equal:today|date_format:Y-m-d',
