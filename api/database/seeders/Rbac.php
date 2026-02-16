@@ -8,9 +8,6 @@ use Modules\Rbac\Models\Role;
 
 class Rbac extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         // 1. Permisos Globales
@@ -19,6 +16,8 @@ class Rbac extends Seeder
         $this->addPermission('rbac.role', 'Roles y Permisos', 'Administrar Roles y Permisos');
         $this->addPermission('specialization_areas.manage', 'Áreas de Especialización', 'Administrar áreas de especialización');
         $this->addPermission('cv.evaluation', 'Evaluación CV', 'Evaluar currículums y ver documentos de postulantes');
+        $this->addPermission('job.manage', 'Convocatorias', 'Administrar convocatorias');
+        
         // 2. Módulos Específicos
         $this->seedPostulantes();
         $this->seedUsers();
@@ -52,7 +51,6 @@ class Rbac extends Seeder
     {
         $this->addPermission('rbac.role', 'Administrar Roles', 'Administrar roles');
     }
-
 
     private function addPermission(string $name, string $display, string $description): Permission
     {

@@ -102,16 +102,14 @@ Route::prefix('professional-records')->middleware('jwt:internal')->group(functio
         ->name('professional-records.files.download');
 });
 
-// Job Vacancies routes
 Route::prefix('job-vacancies')->group(function () {
-    // Public routes
+
     Route::get('/', [JobVacancyController::class, 'list']);
     Route::get('/show', [JobVacancyController::class, 'show']);
     Route::get('/files/download/{filePath}', [JobVacancyFileController::class, 'download'])
         ->where('filePath', '.*')
         ->name('job-vacancies.files.download');
     
-    // Protected routes (admin only)
     Route::middleware('jwt:internal')->group(function () {
         Route::post('/', [JobVacancyController::class, 'create']);
         Route::patch('/', [JobVacancyController::class, 'update']);

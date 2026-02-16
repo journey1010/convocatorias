@@ -2,23 +2,19 @@
 
 namespace Modules\JobVacancies\Requests;
 
-use Illuminate\Validation\Rule;
 use Modules\Auth\Shared\Requests\Template;
-use Modules\JobVacancies\Enums\VacancyStatus;
 
 class CreateJobVacancyRequest extends Template
 {
     public function authorize(): bool
     {
-        // Solo administradores pueden crear convocatorias
-        return $this->verifyPermission(['p.admin', 'p.rrhh']);
+        return $this->verifyPermission('job.manage');
     }
 
     public function rules(): array
     {
         return [
             'title' => 'required|string|max:400',
-            'status' => ['required', Rule::enum(VacancyStatus::class)],
             'mode' => 'required|boolean',
             'start_date' => 'required|date',
             'close_date' => 'required|date|after:start_date',
@@ -36,7 +32,6 @@ class CreateJobVacancyRequest extends Template
         return [
             'title.required' => 'El título de la convocatoria es requerido',
             'title.max' => 'El título no debe exceder 400 caracteres',
-            'status.required' => 'El estado es requerido',
             'mode.required' => 'El modo de postulación es requerido',
             'mode.boolean' => 'El modo debe ser verdadero o falso',
             'start_date.required' => 'La fecha de inicio es requerida',
