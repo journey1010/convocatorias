@@ -42,6 +42,10 @@ class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
 
     private function mapRequestToUpsertDto(UpsertPersonalDataExtraRequest $request, int $userId)
     {
+        $have_cert_disability = $request->boolean('have_cert_disability');
+        $have_cert_army = $request->boolean('have_cert_army');
+        $have_cert_professional_credentials = $request->boolean('have_cert_professional_credentials');
+        
         return new \Modules\Accounts\Applications\Dtos\StorePersonalDataExtraDto(
             user_id: $userId,
             department_id: $request->input('department_id'),
@@ -52,12 +56,12 @@ class PersonalDataExtraController extends \Modules\Shared\Controllers\Controller
             birthday: $request->input('birthday'),
             gender: $request->input('gender'),
             file_dni: $request->file('file_dni'),
-            have_cert_disability: $request->boolean('have_cert_disability'),
-            file_cert_disability: $request->file('file_cert_disability'),
-            have_cert_army: $request->boolean('have_cert_army'),
-            file_cert_army: $request->file('file_cert_army'),
-            have_cert_professional_credentials: $request->boolean('have_cert_professional_credentials'),
-            file_cert_professional_credentials: $request->file('file_cert_professional_credentials'),
+            have_cert_disability: $have_cert_disability,
+            file_cert_disability: $have_cert_disability ? $request->file('file_cert_disability') : null,
+            have_cert_army: $have_cert_army,
+            file_cert_army: $have_cert_army ? $request->file('file_cert_army') : null,
+            have_cert_professional_credentials: $have_cert_professional_credentials,
+            file_cert_professional_credentials: $have_cert_professional_credentials ? $request->file('file_cert_professional_credentials') : null,
             is_active_cert_professional_credentials: $request->boolean('is_active_cert_professional_credentials'),
         );
     }
