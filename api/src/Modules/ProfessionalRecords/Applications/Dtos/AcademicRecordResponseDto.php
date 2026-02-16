@@ -28,7 +28,7 @@ class AcademicRecordResponseDto
             id: $record->id,
             user_id: $record->user_id,
             specialization_area_id: $record->specialization_area_id,
-            specialization_area_name: $record->specializationArea->name,
+            specialization_area_name: $record->specializationArea?->name,
             level: $record->level,
             status: $record->status,
             start_date: $record->start_date,
