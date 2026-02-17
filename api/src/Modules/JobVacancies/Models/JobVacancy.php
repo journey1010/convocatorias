@@ -16,7 +16,7 @@ class JobVacancy extends Model
     protected $table = 'job_vacancies';
 
     protected $fillable = [
-        'user_id',
+        'created_by',
         'locale_id',
         'title',
         'status',
@@ -25,15 +25,8 @@ class JobVacancy extends Model
         'close_date',
     ];
 
-    protected $casts = [
-        'status' => VacancyStatus::class,
-        'mode' => 'boolean',
-        'start_date' => 'date',
-        'close_date' => 'date',
-    ];
-
     // Relationships
-    public function user(): BelongsTo
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

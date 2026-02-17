@@ -19,11 +19,10 @@ class CreateJobVacancyCase
     public function exec(CreateJobVacancyDto $dto): JobVacancyResponseDto
     {
         return DB::transaction(function () use ($dto) {
-            $this->fileService->user_id = (string) $dto->user_id;
+            $this->fileService->user_id = (string) $dto->created_by;
 
-            // Crear la convocatoria
             $vacancy = $this->vacancyRepository->create([
-                'user_id' => $dto->user_id,
+                'created_by' => $dto->created_by,
                 'locale_id' => $dto->locale_id,
                 'title' => $dto->title,
                 'status' => $dto->status,
@@ -37,7 +36,7 @@ class CreateJobVacancyCase
                 foreach ($dto->profiles as $profileData) {
                     $data = [
                         'locale_id' => $dto->locale_id,
-                        'user_id' => $dto->user_id,
+                        'created_by' => $dto->created_by,
                         'job_vacancy_id' => $vacancy->id,
                         'title' => $profileData['title'],
                         'salary' => $profileData['salary'],

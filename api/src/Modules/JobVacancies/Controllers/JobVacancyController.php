@@ -26,8 +26,8 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
         $ctx = RequestContextResolver::fromRequest($request);
 
         $dto = new CreateJobVacancyDto(
-            user_id: $ctx->userId,
-            locale_id: $request->input('locale_id') ?? $ctx->localeIds[0],
+            created_by: $ctx->userId,
+            locale_id: $request->input('locale_id'),
             title: $request->input('title'),
             status: $request->input('status'),
             mode: $request->input('mode'),

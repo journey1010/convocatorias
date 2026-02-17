@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('job_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('locale_id')->constrained('locales');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('created_by')->constrained('users');
             $table->foreignId('job_vacancy_id')->constrained('job_vacancies');
             $table->string('title');
             $table->string('salary', 10);

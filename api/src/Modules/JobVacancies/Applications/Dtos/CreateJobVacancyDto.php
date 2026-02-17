@@ -5,7 +5,7 @@ namespace Modules\JobVacancies\Applications\Dtos;
 class CreateJobVacancyDto
 {
     public function __construct(
-        public readonly int $user_id,
+        public readonly int $created_by,
         public readonly int $locale_id,
         public readonly string $title,
         public readonly int $status,

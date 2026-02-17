@@ -15,6 +15,7 @@ class CreateJobVacancyRequest extends Template
     {
         return [
             'title' => 'required|string|max:400',
+            'locale_id' => 'required|integer|exists:locales,id',
             'mode' => 'required|boolean',
             'start_date' => 'required|date',
             'close_date' => 'required|date|after:start_date',
@@ -43,6 +44,8 @@ class CreateJobVacancyRequest extends Template
             'profiles.*.office_id.exists' => 'La oficina especificada no existe',
             'profiles.*.file.mimes' => 'El archivo debe ser PDF, DOC o DOCX',
             'profiles.*.file.max' => 'El archivo no debe exceder 4 MB',
+            'locale_id.required' => 'El idioma es requerido',
+            'locale_id.exists' => 'El idioma especificado no existe'
         ];
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('job_vacancies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('created_by')->constrained('users');
             $table->foreignId('locale_id')->constrained('locales');
             $table->string('title', 400);
             $table->tinyInteger('status');
