@@ -42,4 +42,3 @@ class JobVacancyFileStorageService
         return false;
     }
 }
-

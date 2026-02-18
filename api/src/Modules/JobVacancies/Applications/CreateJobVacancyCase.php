@@ -4,7 +4,7 @@ namespace Modules\JobVacancies\Applications;
 
 use Illuminate\Support\Facades\DB;
 use Modules\JobVacancies\Applications\Dtos\{CreateJobVacancyDto, JobVacancyResponseDto};
-use Modules\JobVacancies\Repositories\{JobVacancyRepository, JobProfileRepository};
+use Modules\JobVacancies\Repositories\{JobVacancyRepository, JobProfileRepository, JobVacancyFileRepository};
 use Modules\JobVacancies\Services\JobVacancyFileStorageService;
 use Infrastructure\Exceptions\JsonResponseException;
 
@@ -13,7 +13,8 @@ class CreateJobVacancyCase
     public function __construct(
         private JobVacancyRepository $vacancyRepository,
         private JobProfileRepository $profileRepository,
-        private JobVacancyFileStorageService $fileService
+        private JobVacancyFileStorageService $fileService,
+        private JobVacancyFileRepository $baseFileRepository
     ) {}
 
     public function exec(CreateJobVacancyDto $dto): JobVacancyResponseDto
@@ -52,6 +53,13 @@ class CreateJobVacancyCase
 
                     $this->profileRepository->create($data);
                 }
+            }
+            
+            if (!empty($dto->doc_base_file)) {
+                $this->baseFileRepository->create([
+                    'job_vacancy_id' => $vacancy->id,
+                    'file' => $this->fileService->storeVacancyFile($dto->doc_base_file),
+                ]);
             }
 
             // Recargar con relaciones

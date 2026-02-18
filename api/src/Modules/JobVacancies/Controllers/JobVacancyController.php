@@ -34,6 +34,7 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
             start_date: $request->input('start_date'),
             close_date: $request->input('close_date'),
             profiles: $request->input('profiles', []),
+            doc_base_file: $request->file('doc_base_file'),
         );
 
         $result = $case->exec($dto);

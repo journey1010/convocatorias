@@ -2,6 +2,8 @@
 
 namespace Modules\JobVacancies\Applications\Dtos;
 
+use Illuminate\Http\UploadedFile;
+
 class CreateJobVacancyDto
 {
     public function __construct(
@@ -13,5 +15,6 @@ class CreateJobVacancyDto
         public readonly string $start_date,
         public readonly string $close_date,
         public readonly array $profiles = [], // Array of profile data
+        public readonly ?UploadedFile $doc_base_file = null,
     ) {}
 }

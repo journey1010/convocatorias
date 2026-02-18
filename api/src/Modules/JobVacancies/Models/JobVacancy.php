@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 use Modules\User\Models\User;
 use Modules\Office\Models\Locale;
-use Modules\JobVacancies\Enums\{VacancyStatus, ApplicationMode};
+use Modules\JobVacancies\Enums\VacancyStatus;
 
 class JobVacancy extends Model
 {
