@@ -11,6 +11,7 @@ class CreateJobVacancyRequest extends Template
         return $this->verifyPermission('job.manage');
     }
 
+
     public function rules(): array
     {
         return [
@@ -47,8 +48,8 @@ class CreateJobVacancyRequest extends Template
             'profiles.*.file.max' => 'El archivo no debe exceder 4 MB',
             'doc_base_file.mimes' => 'El archivo debe ser PDF, DOC o DOCX',
             'doc_base_file.max' => 'El archivo no debe exceder 4 MB',
-            'locale_id.required' => 'El idioma es requerido',
-            'locale_id.exists' => 'El idioma especificado no existe'
+            'locale_id.required' => 'El Local es requerido',
+            'locale_id.exists' => 'El Local especificado no existe'
         ];
     }
 }
