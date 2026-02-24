@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 use Modules\JobVacancies\Applications\Dtos\{CreateJobVacancyDto, JobVacancyResponseDto};
 use Modules\JobVacancies\Repositories\{JobVacancyRepository, JobProfileRepository, JobVacancyFileRepository};
 use Modules\JobVacancies\Services\JobVacancyFileStorageService;
-use Infrastructure\Exceptions\JsonResponseException;
 
 class CreateJobVacancyCase
 {
