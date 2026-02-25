@@ -15,7 +15,7 @@ class JobVacancyFile extends Model
 
     protected $fillable = [
         'locale_id',
-        'job_vancancy_id', // Note: keeping typo from migration
+        'job_vacancy_id',
         'file',
         'name',
     ];

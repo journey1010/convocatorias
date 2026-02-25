@@ -57,7 +57,9 @@ class CreateJobVacancyCase
             if (!empty($dto->doc_base_file)) {
                 $this->baseFileRepository->create([
                     'job_vacancy_id' => $vacancy->id,
+                    'locale_id' => $dto->locale_id,
                     'file' => $this->fileService->storeVacancyFile($dto->doc_base_file),
+                    'name' => $dto->doc_base_file->getClientOriginalName(),
                 ]);
             }
 

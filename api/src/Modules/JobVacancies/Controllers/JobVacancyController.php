@@ -29,6 +29,7 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
             created_by: $ctx->userId,
             locale_id: $request->input('locale_id'),
             title: $request->input('title'),
+            status: 1,
             mode: $request->boolean('mode'),
             start_date: $request->input('start_date'),
             close_date: $request->input('close_date'),

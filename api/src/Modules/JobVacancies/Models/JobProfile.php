@@ -16,7 +16,7 @@ class JobProfile extends Model
 
     protected $fillable = [
         'locale_id',
-        'user_id',
+        'created_by',
         'job_vacancy_id',
         'title',
         'salary',

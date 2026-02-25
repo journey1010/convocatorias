@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('job_vacancy_files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('locale_id')->constrained('locales');
-            $table->foreignId('job_vancancy_id')->constrained('job_vacancies');
+            $table->foreignId('job_vacancy_id')->constrained('job_vacancies');
             $table->string('file');
             $table->string('name');
             $table->timestamps();
