@@ -19,8 +19,8 @@ class CreateJobVacancyCase
     public function exec(CreateJobVacancyDto $dto): JobVacancyResponseDto
     {
         return DB::transaction(function () use ($dto) {
-            $this->fileService->user_id = (string) $dto->created_by;
 
+            //1. Crear la convocatoria
             $vacancy = $this->vacancyRepository->create([
                 'created_by' => $dto->created_by,
                 'locale_id' => $dto->locale_id,
@@ -35,33 +35,26 @@ class CreateJobVacancyCase
             if (!empty($dto->profiles)) {
                 foreach ($dto->profiles as $profileData) {
                     $data = [
-                        'locale_id' => $dto->locale_id,
                         'created_by' => $dto->created_by,
                         'job_vacancy_id' => $vacancy->id,
                         'title' => $profileData['title'],
                         'salary' => $profileData['salary'],
+                        'locale_id' => $profileData['locale_id'],
                         'office_id' => $profileData['office_id'],
-                        'code_profile' => $profileData['code_profile'] ?? null,
-                        'file' => '',
+                        'code_profile' => $profileData['code_profile'],
+                        'file' => $this->fileService->storeProfileFile($profileData['file']),
                     ];
-
-                    // Almacenar archivo de perfil si existe
-                    if (isset($profileData['file']) && $profileData['file']) {
-                        $data['file'] = $this->fileService->storeProfileFile($profileData['file']);
-                    }
 
                     $this->profileRepository->create($data);
                 }
             }
             
-            if (!empty($dto->doc_base_file)) {
-                $this->baseFileRepository->create([
-                    'job_vacancy_id' => $vacancy->id,
-                    'locale_id' => $dto->locale_id,
-                    'file' => $this->fileService->storeVacancyFile($dto->doc_base_file),
-                    'name' => $dto->doc_base_file->getClientOriginalName(),
-                ]);
-            }
+            $this->baseFileRepository->create([
+                'job_vacancy_id' => $vacancy->id,
+                'locale_id' => $dto->locale_id,
+                'file' => $this->fileService->storeVacancyFile($dto->doc_base_file),
+                'name' => $dto->doc_base_file->getClientOriginalName(),
+            ]);
 
             // Recargar con relaciones
             $vacancy = $this->vacancyRepository->findById($vacancy->id);

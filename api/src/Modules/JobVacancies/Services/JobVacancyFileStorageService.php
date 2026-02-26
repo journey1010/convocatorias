@@ -7,14 +7,12 @@ use Illuminate\Support\Facades\Storage;
 
 class JobVacancyFileStorageService
 {
-    public string $user_id;
-
     /**
      * Almacena un archivo de convocatoria
-     */
+    */
     public function storeVacancyFile(UploadedFile $file, string $prefix = 'vacancy'): string
     {
-        $path = "job_vacancies/{$this->user_id}/{$prefix}";
+        $path = "job_vacancies/{$prefix}";
         $filename = time() . '_' . $file->getClientOriginalName();
         
         Storage::disk('public')->putFileAs($path, $file, $filename);
@@ -40,5 +38,12 @@ class JobVacancyFileStorageService
         }
         
         return false;
+    }
+
+    public static function getUrl(string $filePath): string
+    {
+        /** @var \Illuminate\Cloud $disk */
+        $disk = Storage::disk('public');
+        return $disk->url($filePath);
     }
 }

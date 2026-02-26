@@ -25,16 +25,18 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
     {
         $ctx = RequestContextResolver::fromRequest($request);
 
+        $inputs = $request->validated();
+    
         $dto = new CreateJobVacancyDto(
             created_by: $ctx->userId,
-            locale_id: $request->input('locale_id'),
-            title: $request->input('title'),
+            locale_id: $ctx->localeId,
+            title: $inputs['title'],
             status: 1,
-            mode: $request->boolean('mode'),
-            start_date: $request->input('start_date'),
-            close_date: $request->input('close_date'),
-            profiles: $request->input('profiles', []),
-            doc_base_file: $request->file('doc_base_file'),
+            mode: $inputs['mode'],
+            start_date: $inputs['start_date'],
+            close_date: $inputs['close_date'],
+            profiles: $inputs['profiles'],
+            doc_base_file: $inputs['doc_base_file'],
         );
 
         $result = $case->exec($dto);

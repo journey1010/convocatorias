@@ -10,7 +10,7 @@ class JobVacancyRepository
 {
     public function findById(int $id): ?JobVacancy
     {
-        return JobVacancy::with(['files', 'profiles', 'user', 'locale'])->find($id);
+        return JobVacancy::with(['files', 'profiles', 'locale'])->find($id);
     }
 
     public function findByIdOrFail(int $id): JobVacancy
@@ -43,7 +43,7 @@ class JobVacancyRepository
     {
         $query = JobVacancy::query()
             ->with(['files', 'profiles.office', 'user'])
-            ->whereIn('locale_id', $ctx->localeIds);
+            ->whereIn('locale_id', [$ctx->localeId]);
 
         return $query->orderBy('created_at', 'desc')->get();
     }
@@ -65,7 +65,7 @@ class JobVacancyRepository
     public function canUserEdit(JobVacancy $vacancy, RequestContext $ctx): bool
     {
         // Debe ser del mismo locale
-        if (!in_array($vacancy->locale_id, $ctx->localeIds)) {
+        if (!in_array($vacancy->locale_id, [$ctx->localeId])) {
             return false;
         }
 

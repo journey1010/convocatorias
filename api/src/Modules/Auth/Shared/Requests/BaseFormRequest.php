@@ -64,7 +64,7 @@ abstract class BaseFormRequest extends FormRequest
             dni: (string) $this->attributes->get('dni', ''),
             permissions: $permissionIds,
             officeIds: $this->normalizeArrayAttribute('office_ids'),
-            localeIds: $this->normalizeArrayAttribute('locale_ids')
+            localeId: (int) implode("",$this->normalizeArrayAttribute('locale_ids'))
         );
     }
 
