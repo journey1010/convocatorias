@@ -15,7 +15,7 @@ final class RequestContext
         public readonly string $dni,
         public readonly array $permissions,
         public readonly array $officeIds,
-        public readonly array $localeIds,
+        public readonly int $localeId,
     ) {}
 
     public function hasPermission(int $permissionId): bool

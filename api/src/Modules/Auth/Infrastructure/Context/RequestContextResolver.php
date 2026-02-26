@@ -30,7 +30,7 @@ final class RequestContextResolver
             dni: (string) $request->attributes->get('dni', ''),
             permissions: self::parseIntArray($request->attributes->get('permissions', '')),
             officeIds: self::parseIntArray($request->attributes->get('office_ids', '')),
-            localeIds: self::parseIntArray($request->attributes->get('locale_ids', '')),
+            localeId: intval($request->attributes->get('locale_ids', 0)),
         );
 
         // Cachear en el request para futuras llamadas
