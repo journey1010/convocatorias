@@ -2,6 +2,7 @@
 
 namespace Modules\JobVacancies\Applications\Dtos;
 
+use Modules\JobVacancies\Enums\VacancyStatus;
 use Modules\JobVacancies\Models\JobVacancy;
 use Modules\JobVacancies\Services\JobVacancyFileStorageService as Storage;
 
@@ -10,7 +11,7 @@ class JobVacancyResponseDto
     public function __construct(
         public readonly int $id,
         public readonly string $title,
-        public readonly int $status,
+        public readonly VacancyStatus $status,
         public readonly bool $mode,
         public readonly string $start_date,
         public readonly string $close_date,

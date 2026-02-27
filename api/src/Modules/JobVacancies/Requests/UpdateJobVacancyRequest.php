@@ -10,8 +10,7 @@ class UpdateJobVacancyRequest extends Template
 {
     public function authorize(): bool
     {
-        // Solo administradores pueden actualizar convocatorias
-        return $this->verifyPermission(['p.admin', 'p.rrhh']);
+        return $this->verifyPermission('job.manage');
     }
 
     public function rules(): array

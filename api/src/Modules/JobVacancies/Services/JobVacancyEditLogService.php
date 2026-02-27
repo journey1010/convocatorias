@@ -42,26 +42,6 @@ class JobVacancyEditLogService
     }
 
     /**
-     * Registra la creación de una convocatoria
-     */
-    public function logCreation(JobVacancy $vacancy, RequestContext $ctx): void
-    {
-        if (!$vacancy->shouldLogChanges()) {
-            return;
-        }
-
-        $this->logRepository->create([
-            'job_vacancy_id' => $vacancy->id,
-            'user_id' => $ctx->userId,
-            'action' => 'created',
-            'old_values' => null,
-            'new_values' => $vacancy->toArray(),
-            'changed_fields' => null,
-            'ip_address' => request()->ip(),
-        ]);
-    }
-
-    /**
      * Registra un cambio de estado
      */
     public function logStatusChange(

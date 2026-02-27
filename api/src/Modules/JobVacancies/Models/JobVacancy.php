@@ -25,6 +25,11 @@ class JobVacancy extends Model
         'close_date',
     ];
 
+    protected $casts = [
+        'mode' => 'boolean',
+        'status' => VacancyStatus::class,
+    ];
+
     // Relationships
     public function createdBy(): BelongsTo
     {

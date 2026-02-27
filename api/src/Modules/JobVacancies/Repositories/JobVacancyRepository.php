@@ -59,17 +59,15 @@ class JobVacancyRepository
         return $vacancy->fresh(['files', 'profiles']);
     }
 
-    /**
-     * Verifica si un usuario puede editar la convocatoria
-     */
+    /**  Verifica si un usuario puede editar la convocatoria */
     public function canUserEdit(JobVacancy $vacancy, RequestContext $ctx): bool
     {
         // Debe ser del mismo locale
-        if (!in_array($vacancy->locale_id, [$ctx->localeId])) {
+        if ($vacancy->locale_id != $ctx->localeId) {
             return false;
         }
-
-        // Debe ser el creador o tener permisos de administrador
-        return $vacancy->user_id === $ctx->userId || $ctx->isEmployee();
+        
+        // Debe ser el creador
+        return $vacancy->created_by === $ctx->userId;
     }
 }

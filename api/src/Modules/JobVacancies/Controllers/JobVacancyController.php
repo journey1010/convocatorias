@@ -18,6 +18,7 @@ use Modules\JobVacancies\Applications\{
     UpdateVacancyStatusCase
 };
 use Modules\JobVacancies\Applications\Dtos\{CreateJobVacancyDto, UpdateJobVacancyDto};
+use Modules\JobVacancies\Enums\VacancyStatus;
 
 class JobVacancyController extends \Modules\Shared\Controllers\Controller
 {
@@ -31,7 +32,7 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
             created_by: $ctx->userId,
             locale_id: $ctx->localeId,
             title: $inputs['title'],
-            status: 1,
+            status: VacancyStatus::PUBLICADA,
             mode: $inputs['mode'],
             start_date: $inputs['start_date'],
             close_date: $inputs['close_date'],
@@ -52,7 +53,7 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
             id: $request->input('id'),
             title: $request->input('title'),
             status: $request->input('status'),
-            mode: $request->input('mode'),
+            mode: $request->boolean('mode'),
             start_date: $request->input('start_date'),
             close_date: $request->input('close_date'),
         );

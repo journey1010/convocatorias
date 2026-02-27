@@ -49,6 +49,7 @@ class CreateJobVacancyCase
                 }
             }
             
+            //Guardar Bases de convocatoria
             $this->baseFileRepository->create([
                 'job_vacancy_id' => $vacancy->id,
                 'locale_id' => $dto->locale_id,
