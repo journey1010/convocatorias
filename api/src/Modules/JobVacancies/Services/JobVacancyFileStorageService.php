@@ -40,7 +40,7 @@ class JobVacancyFileStorageService
         return false;
     }
 
-    public static function getUrl(string $filePath): string
+    public static function url(string $filePath): string
     {
         /** @var \Illuminate\Cloud $disk */
         $disk = Storage::disk('public');

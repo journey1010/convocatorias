@@ -3,7 +3,7 @@
 namespace Modules\JobVacancies\Applications\Dtos;
 
 use Modules\JobVacancies\Models\JobVacancy;
-use Illuminate\Support\Facades\Storage;
+use Modules\JobVacancies\Services\JobVacancyFileStorageService as Storage;
 
 class JobVacancyResponseDto
 {
@@ -22,7 +22,6 @@ class JobVacancyResponseDto
     {
         $files = [];
         $profiles = [];
-        $disk = Storage::disk('public')
 
         if ($includeRelations) {
             $files = $vacancy->files->map(fn($file) => [
