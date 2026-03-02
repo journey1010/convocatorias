@@ -24,6 +24,7 @@ class CreateJobVacancyRequest extends Template
             'profiles.*.office_id' => 'required|integer|exists:offices,id',
             'profiles.*.code_profile' => 'required|string|max:255',
             'profiles.*.locale_id' => 'required|integer|exists:locales,id', 
+            'profiles.*.specialization_area_id' => 'required|integer|exists:specialization_areas,id',
             'profiles.*.file' => 'required|file|mimes:pdf,doc,docx|max:4096',
             'doc_base_file' => 'required|file|mimes:pdf,doc,docx|max:4096',
         ];

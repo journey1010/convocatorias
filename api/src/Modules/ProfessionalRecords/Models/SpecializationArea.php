@@ -5,6 +5,7 @@ namespace Modules\ProfessionalRecords\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\JobVacancies\Models\JobProfile;
 
 class SpecializationArea extends Model
 {
@@ -19,5 +20,10 @@ class SpecializationArea extends Model
     public function academicRecords(): HasMany
     {
         return $this->hasMany(AcademicRecord::class);
+    }
+
+    public function jobProfiles(): HasMany
+    {
+        return $this->hasMany(JobProfile::class);
     }
 }

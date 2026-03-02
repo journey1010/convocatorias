@@ -42,6 +42,7 @@ class CreateJobVacancyCase
                         'locale_id' => $profileData['locale_id'],
                         'office_id' => $profileData['office_id'],
                         'code_profile' => $profileData['code_profile'],
+                        'specialization_area_id' => $profileData['specialization_area_id'],
                         'file' => $this->fileService->storeProfileFile($profileData['file']),
                     ];
 

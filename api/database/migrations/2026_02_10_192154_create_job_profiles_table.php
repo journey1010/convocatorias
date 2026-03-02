@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('locale_id')->constrained('locales');
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('job_vacancy_id')->constrained('job_vacancies');
+            $table->foreignId('specialization_area_id')->constrained('specialization_areas');
             $table->string('title');
             $table->string('salary', 10);
             $table->foreignId('office_id')->constrained('offices');
@@ -27,7 +28,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     */
+    */
     public function down(): void
     {
         Schema::dropIfExists('job_profiles');

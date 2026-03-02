@@ -2,11 +2,12 @@
 
 namespace Modules\JobVacancies\Models;
 
+use Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Office\Models\{Locale, Office};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\User\Models\User;
-use Modules\Office\Models\{Locale, Office};
+use Modules\ProfessionalRecords\Models\SpecializationArea;
 
 class JobProfile extends Model
 {
@@ -22,6 +23,7 @@ class JobProfile extends Model
         'salary',
         'office_id',
         'code_profile',
+        'specialization_area_id',
         'file',
     ];
 
@@ -44,5 +46,10 @@ class JobProfile extends Model
     public function office(): BelongsTo
     {
         return $this->belongsTo(Office::class);
+    }
+
+    public function specializationArea(): BelongsTo
+    {
+        return $this->belongsTo(SpecializationArea::class, 'specialization_area_id');
     }
 }

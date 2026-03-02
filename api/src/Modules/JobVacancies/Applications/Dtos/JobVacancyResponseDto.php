@@ -37,6 +37,7 @@ class JobVacancyResponseDto implements JsonSerializable
                 'title' => $profile->title,
                 'salary' => $profile->salary,
                 'office_id' => $profile->office_id,
+                'specialization_area_id' => $profile->specialization_area_id,
                 'code_profile' => $profile->code_profile,
                 'file' => Storage::url($profile->file)
             ])->toArray();

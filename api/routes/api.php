@@ -105,12 +105,11 @@ Route::prefix('professional-records')->middleware('jwt:internal')->group(functio
 Route::prefix('job-vacancies')->group(function () {
     Route::get('/', [JobVacancyController::class, 'list']);
     Route::get('/show', [JobVacancyController::class, 'show']);
-    Route::get('/files/download/{filePath}', [JobVacancyFileController::class, 'download'])
-        ->where('filePath', '.*')
-        ->name('job-vacancies.files.download');
-    
+    Route::get('/pages', [JobVacancyController::class, 'pagination']);
+
     Route::middleware('jwt:internal')->group(function () {
         Route::post('/', [JobVacancyController::class, 'create']);
+        Route::get('');
         Route::patch('/', [JobVacancyController::class, 'update']);
         Route::patch('/status', [JobVacancyController::class, 'updateStatus']);
         Route::post('/files', [JobVacancyFileController::class, 'attach']);

@@ -45,6 +45,16 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
         return response()->json($result, 201);
     }
 
+    public function pagination(ListJobVacanciesRequest $request, ListJobVacanciesCase $case): JsonResponse
+    {
+        $ctx = RequestContextResolver::fromRequest($request);
+
+        $filters = $request->only(['status', 'locale_id']);
+        $result = $case->exec($ctx, $filters);
+
+        return response()->json(['items' => $result]);
+    }
+
     public function update(UpdateJobVacancyRequest $request, UpdateJobVacancyCase $case): JsonResponse
     {
         $ctx = RequestContextResolver::fromRequest($request);
