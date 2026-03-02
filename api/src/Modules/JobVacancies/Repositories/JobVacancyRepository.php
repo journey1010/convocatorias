@@ -10,7 +10,7 @@ class JobVacancyRepository
 {
     public function findById(int $id): ?JobVacancy
     {
-        return JobVacancy::with(['files', 'profiles', 'locale'])->find($id);
+        return JobVacancy::with(['files', 'profiles'])->find($id);
     }
 
     public function findByIdOrFail(int $id): JobVacancy

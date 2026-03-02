@@ -5,8 +5,9 @@ namespace Modules\JobVacancies\Applications\Dtos;
 use Modules\JobVacancies\Enums\VacancyStatus;
 use Modules\JobVacancies\Models\JobVacancy;
 use Modules\JobVacancies\Services\JobVacancyFileStorageService as Storage;
+use JsonSerializable;
 
-class JobVacancyResponseDto
+class JobVacancyResponseDto implements JsonSerializable
 {
     public function __construct(
         public readonly int $id,
@@ -51,5 +52,10 @@ class JobVacancyResponseDto
             files: $files,
             profiles: $profiles,
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_filter(get_object_vars($this), fn($value) => $value !== null && $value !== []);
     }
 }

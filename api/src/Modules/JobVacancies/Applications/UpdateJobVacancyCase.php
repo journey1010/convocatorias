@@ -36,6 +36,7 @@ class UpdateJobVacancyCase
 
             // Guardar valores antiguos para el log
             $oldData = $vacancy->only(['title', 'status', 'mode', 'start_date', 'close_date']);
+            $oldData['status'] = $oldData['status']->value;
 
             // Preparar datos de actualización
             $updateData = [];
@@ -50,9 +51,11 @@ class UpdateJobVacancyCase
 
             // Registrar cambios en el log
             $newData = $vacancy->only(['title', 'status', 'mode', 'start_date', 'close_date']);
+            $newData['status'] = $vacancy->status->value;
+            
             $this->logService->logChange($vacancy, $oldData, $newData, 'updated', $ctx);
 
-            return JobVacancyResponseDto::fromModel($vacancy);
+            return JobVacancyResponseDto::fromModel($vacancy, false);
         });
     }
 }
