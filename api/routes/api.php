@@ -105,7 +105,7 @@ Route::prefix('professional-records')->middleware('jwt:internal')->group(functio
 Route::prefix('job-vacancies')->group(function () {
     Route::get('/', [JobVacancyController::class, 'list']);
     Route::get('/show', [JobVacancyController::class, 'show']);
-    Route::get('/pages', [JobVacancyController::class, 'pagination']);
+    Route::get('/page/search', [JobVacancyController::class, 'search']);
 
     Route::middleware('jwt:internal')->group(function () {
         Route::post('/', [JobVacancyController::class, 'create']);

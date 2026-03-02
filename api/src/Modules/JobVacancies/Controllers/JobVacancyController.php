@@ -8,6 +8,7 @@ use Modules\JobVacancies\Requests\{
     CreateJobVacancyRequest,
     UpdateJobVacancyRequest,
     ListJobVacanciesRequest,
+    SearchProfilesRequest,
     UpdateStatusRequest
 };
 use Modules\JobVacancies\Applications\{
@@ -15,9 +16,14 @@ use Modules\JobVacancies\Applications\{
     UpdateJobVacancyCase,
     ListJobVacanciesCase,
     GetJobVacancyDetailsCase,
-    UpdateVacancyStatusCase
+    UpdateVacancyStatusCase,
+    PaginationProfilesCase
 };
-use Modules\JobVacancies\Applications\Dtos\{CreateJobVacancyDto, UpdateJobVacancyDto};
+use Modules\JobVacancies\Applications\Dtos\{
+    CreateJobVacancyDto, 
+    UpdateJobVacancyDto, 
+    JobProfileSearchDto
+};
 use Modules\JobVacancies\Enums\VacancyStatus;
 
 class JobVacancyController extends \Modules\Shared\Controllers\Controller
@@ -45,12 +51,21 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
         return response()->json($result, 201);
     }
 
-    public function pagination(ListJobVacanciesRequest $request, ListJobVacanciesCase $case): JsonResponse
+    public function search(SearchProfilesRequest $request, PaginationProfilesCase $case): JsonResponse
     {
-        $ctx = RequestContextResolver::fromRequest($request);
+        $dto = new JobProfileSearchDto(
+            page: $request->input('page'),
+            per_page: $request->input('per_page'),
+            locale_id: $request->input('locale_id'),
+            office_id: $request->input('office_id'),
+            specialization_area_id: $request->input('specialization_area_id'),
+            status: $request->input('status'),
+            salary: $request->input('salary'),
+            title: $request->input('title'),
+            code_profile: $request->input('code_profile')
+        );
 
-        $filters = $request->only(['status', 'locale_id']);
-        $result = $case->exec($ctx, $filters);
+        $result = $case->exec($dto);
 
         return response()->json(['items' => $result]);
     }
