@@ -2,7 +2,6 @@
 
 namespace Modules\JobVacancies\Applications\Dtos;
 
-use Modules\JobVacancies\Enums\VacancyStatus;
 
 class JobProfileSearchDto
 {
@@ -12,7 +11,7 @@ class JobProfileSearchDto
         public readonly ?int $locale_id,
         public readonly ?int $office_id,
         public readonly ?int $specialization_area_id,
-        public readonly ?VacancyStatus $status,
+        public readonly ?string $status,
         public readonly ?float $salary,
         public readonly ?string $title,
         public readonly ?string $code_profile

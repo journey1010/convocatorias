@@ -70,7 +70,10 @@ class JobProfileRepository
                 'locales.name as locale_name',
                 'specialization_areas.name as specialization_area_name',
                 'job_vacancies.status as status_name',
-                'job_vacancies.id as job_vacancy_id'
+                'job_vacancies.id as job_vacancy_id',
+                'job_vacancies.title as job_vacancy_title',
+                'job_vacancies.start_date as job_vacancy_start_date',
+                'job_vacancies.close_date as job_vacancy_close_date'
             )->join('offices', 'job_profiles.office_id', '=', 'offices.id')
             ->join('locales', 'job_profiles.locale_id', '=', 'locales.id')
             ->join('specialization_areas', 'job_profiles.specialization_area_id', '=', 'specialization_areas.id')

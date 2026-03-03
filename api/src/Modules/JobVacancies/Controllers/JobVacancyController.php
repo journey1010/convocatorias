@@ -67,7 +67,7 @@ class JobVacancyController extends \Modules\Shared\Controllers\Controller
 
         $result = $case->exec($dto);
 
-        return response()->json(['items' => $result]);
+        return response()->json($result);
     }
 
     public function update(UpdateJobVacancyRequest $request, UpdateJobVacancyCase $case): JsonResponse

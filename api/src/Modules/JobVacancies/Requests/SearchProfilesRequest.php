@@ -18,13 +18,13 @@ class SearchProfilesRequest extends Template
         return [
             'page' => 'required|integer|min:1',
             'per_page' => 'required|integer|min:1|max:100',
-            'locale_id' => 'sometimes|exists:locales,id',
-            'office_id' => 'sometimes|exists:offices,id',
-            'specialization_area_id' => 'sometimes|exists:specialization_areas,id',
-            'status' => ['sometimes', Rule::enum(VacancyStatus::class)],
-            'salary' => 'sometimes|numeric|min:0',
-            'title' => 'sometimes|string',
-            'code_profile' => 'sometimes|string',
+            'locale_id' => 'nullable|exists:locales,id',
+            'office_id' => 'nullable|exists:offices,id',
+            'specialization_area_id' => 'nullable|exists:specialization_areas,id',
+            'status' => ['nullable', Rule::enum(VacancyStatus::class)],
+            'salary' => 'nullable|numeric|min:0',
+            'title' => 'nullable|string',
+            'code_profile' => 'nullable|string',
         ];
     }
 
